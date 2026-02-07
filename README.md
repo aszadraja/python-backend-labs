@@ -9,3 +9,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 06 ✅: Lists, tuples, and basic collection operations
 - Day 07 ✅: Dictionaries, sets, and frequency counting
 - Day 08 ✅: Functions with lists and dictionaries
+- Day 09 ✅: File handling and string processing
