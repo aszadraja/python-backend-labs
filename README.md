@@ -10,3 +10,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 07 ✅: Dictionaries, sets, and frequency counting
 - Day 08 ✅: Functions with lists and dictionaries
 - Day 09 ✅: File handling and string processing
+- Day 10 ✅: Exception handling and input validation
