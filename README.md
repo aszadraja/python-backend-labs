@@ -12,3 +12,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 09 ✅: File handling and string processing
 - Day 10 ✅: Exception handling and input validation
 - Day 11 ✅: Modules and code organization
+- Day 12 ✅: Virtual environments and dependency management
