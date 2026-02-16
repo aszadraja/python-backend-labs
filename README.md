@@ -13,3 +13,5 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 10 ✅: Exception handling and input validation
 - Day 11 ✅: Modules and code organization
 - Day 12 ✅: Virtual environments and dependency management
+- Day 13 ✅: Introduction to APIs, HTTP, and JSON
+- Day 14 ✅: Built first Flask API server
