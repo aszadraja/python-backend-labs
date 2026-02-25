@@ -15,3 +15,5 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 12 ✅: Virtual environments and dependency management
 - Day 13 ✅: Introduction to APIs, HTTP, and JSON
 - Day 14 ✅: Built first Flask API server
+- Day 15 ✅: Update first server and add Dynamic Routing and Query Parameters
+- Day 16 ✅: Update first server and add POST endpoint with JSON validation
