@@ -18,3 +18,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 15 ✅: Update first server and add Dynamic Routing and Query Parameters
 - Day 16 ✅: Update first server and add POST endpoint with JSON validation
 - Day 17 ✅: Update first server and use put & delete using postman
+- Day 18✅: connected Flask API with SQLite database
