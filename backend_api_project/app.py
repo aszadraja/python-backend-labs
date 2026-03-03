@@ -70,14 +70,67 @@ def create_user():
 
 
 # READ
+
+# Get all users
 @app.route("/users", methods=["GET"])
 def get_users():
     conn = get_db_connection()
     users = conn.execute("SELECT * FROM users").fetchall()
     conn.close()
-
     return jsonify([dict(user) for user in users])
 
+# Get one user by ID
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_user(user_id):
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    conn.close()
+
+    if user is None:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify(dict(user))
+
+
+# UPDATE USER
+@app.route("/users/<int:user_id>", methods=["PUT"])
+def update_user(user_id):
+    data = request.get_json()
+
+    if not data or "name" not in data or "age" not in data:
+        return jsonify({"error": "Invalid input"}), 400
+
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+
+    if user is None:
+        conn.close()
+        return jsonify({"error": "User not found"}), 404
+
+    conn.execute(
+        "UPDATE users SET name = ?, age = ? WHERE id = ?",
+        (data["name"], data["age"], user_id)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User updated successfully"})
+
+# DELETE USER
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+
+    if user is None:
+        conn.close()
+        return jsonify({"error": "User not found"}), 404
+
+    conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User deleted successfully"})
 
 if __name__ == "__main__":
     app.run(debug=True)
