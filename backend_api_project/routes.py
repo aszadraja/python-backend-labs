@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from database import get_db_connection
 
+
 def register_routes(app):
 
     @app.route("/")
@@ -11,20 +12,32 @@ def register_routes(app):
     def create_user():
         data = request.get_json()
 
-        if not data or "name" not in data or "age" not in data:
-            return jsonify({"error": "Invalid input"}), 400
+        if not data:
+            return jsonify({"error": "Request body must be JSON"}), 400
+
+        name = data.get("name")
+        age = data.get("age")
+
+        if not name or not isinstance(name, str):
+            return jsonify({"error": "Valid name is required"}), 400
+
+        if age is None or not isinstance(age, int):
+            return jsonify({"error": "Age must be an integer"}), 400
+
+        if age <= 0:
+            return jsonify({"error": "Age must be positive"}), 400
 
         conn = get_db_connection()
 
         conn.execute(
             "INSERT INTO users (name, age) VALUES (?, ?)",
-            (data["name"], data["age"])
+            (name, age)
         )
 
         conn.commit()
         conn.close()
 
-        return jsonify({"message": "User created"}), 201
+        return jsonify({"message": "User created successfully"}), 201
 
 
     @app.route("/users", methods=["GET"])
