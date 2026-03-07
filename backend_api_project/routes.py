@@ -44,6 +44,31 @@ def register_routes(app):
     # GET ALL USERS
     @app.route("/users", methods=["GET"])
     def get_users():
+
+        page = request.args.get("page", default=1, type=int)
+        limit = request.args.get("limit", default=5, type=int)
+        search = request.args.get("search", default="", type=str)
+
+        offset = (page - 1) * limit
+
+        conn = get_db_connection()
+
+        if search:
+            users = conn.execute(
+                "SELECT * FROM users WHERE name LIKE ? LIMIT ? OFFSET ?",
+                (f"%{search}%", limit, offset)
+            ).fetchall()
+        else:
+            users = conn.execute(
+                "SELECT * FROM users LIMIT ? OFFSET ?",
+                (limit, offset)
+            ).fetchall()
+
+        conn.close()
+
+        return jsonify([dict(user) for user in users])
+
+    
         conn = get_db_connection()
 
         users = conn.execute(

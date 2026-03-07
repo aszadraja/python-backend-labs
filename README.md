@@ -23,3 +23,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 20 ✅: refactored backend into modular architecture
 - Day 21 ✅: added input validation for API requests
 - Day 22 ✅: fixed duplicate route and added delete endpoint
+- Day 23 ✅: added pagination and search filtering to users API
