@@ -24,3 +24,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 21 ✅: added input validation for API requests
 - Day 22 ✅: fixed duplicate route and added delete endpoint
 - Day 23 ✅: added pagination and search filtering to users API
+- Day 24 ✅: added global error handling and consistent API responses
