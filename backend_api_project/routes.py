@@ -38,7 +38,10 @@ def register_routes(app):
         conn.commit()
         conn.close()
 
-        return jsonify({"message": "User created successfully"}), 201
+        return jsonify({
+            "success": True,
+            "message": "User created successfully"
+        }), 201
 
 
     # GET ALL USERS
