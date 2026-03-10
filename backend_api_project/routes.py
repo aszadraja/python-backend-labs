@@ -1,3 +1,4 @@
+import bcrypt
 from flask import jsonify, request
 from database import get_db_connection
 
@@ -11,6 +12,7 @@ def register_routes(app):
     # CREATE USER
     @app.route("/users", methods=["POST"])
     def create_user():
+
         data = request.get_json()
 
         if not data:
@@ -18,30 +20,34 @@ def register_routes(app):
 
         name = data.get("name")
         age = data.get("age")
+        password = data.get("password")   # ← THIS LINE WAS MISSING
 
         if not name or not isinstance(name, str):
-            return jsonify({"error": "Valid name is required"}), 400
+            return jsonify({"error": "Valid name required"}), 400
 
         if age is None or not isinstance(age, int):
-            return jsonify({"error": "Age must be an integer"}), 400
+            return jsonify({"error": "Age must be integer"}), 400
 
-        if age <= 0:
-            return jsonify({"error": "Age must be positive"}), 400
+        if not password:
+            return jsonify({"error": "Password required"}), 400
+
+    # Hash password
+        hashed_password = bcrypt.hashpw(
+            password.encode("utf-8"),
+            bcrypt.gensalt()
+        )
 
         conn = get_db_connection()
 
         conn.execute(
-            "INSERT INTO users (name, age) VALUES (?, ?)",
-            (name, age)
+            "INSERT INTO users (name, age, password) VALUES (?, ?, ?)",
+            (name, age, hashed_password)
         )
 
         conn.commit()
         conn.close()
 
-        return jsonify({
-            "success": True,
-            "message": "User created successfully"
-        }), 201
+        return jsonify({"message": "User registered successfully"}), 201
 
 
     # GET ALL USERS
@@ -146,3 +152,33 @@ def register_routes(app):
         conn.close()
 
         return jsonify({"message": "User deleted successfully"})
+    
+    @app.route("/login", methods=["POST"])
+    def login():
+
+        data = request.get_json()
+
+        name = data.get("name")
+        password = data.get("password")
+
+        conn = get_db_connection()
+
+        user = conn.execute(
+            "SELECT * FROM users WHERE name = ?",
+            (name,)
+        ).fetchone()
+
+        conn.close()
+
+        if user is None:
+            return jsonify({"error": "User not found"}), 404
+
+        stored_password = user["password"]
+
+        if bcrypt.checkpw(password.encode("utf-8"), stored_password):
+            return jsonify({
+                "success": True,
+                "message": "Login successful"
+            })
+
+        return jsonify({"error": "Invalid password"}), 401
