@@ -1,11 +1,11 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from models import init_db
 from routes import register_routes
 
 app = Flask(__name__)
 
-# Guard: limit request body size (e.g., 1MB)
-app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
+# Secret key for JWT
+app.config["SECRET_KEY"] = "supersecretkey"
 
 
 # -------------------------------

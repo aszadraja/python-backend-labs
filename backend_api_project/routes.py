@@ -1,7 +1,37 @@
+import jwt
+import datetime
+from functools import wraps
+from flask import jsonify, request, current_app
 import bcrypt
 from flask import jsonify, request
 from database import get_db_connection
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        token = None
+
+        if "Authorization" in request.headers:
+            token = request.headers["Authorization"].split(" ")[1]
+
+        if not token:
+            return jsonify({"error": "Token missing"}), 401
+
+        try:
+            jwt.decode(
+                token,
+                current_app.config["SECRET_KEY"],
+                algorithms=["HS256"]
+            )
+        except jwt.ExpiredSignatureError:
+            return jsonify({"error": "Token expired"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"error": "Invalid token"}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 def register_routes(app):
 
@@ -52,6 +82,7 @@ def register_routes(app):
 
     # GET ALL USERS
     @app.route("/users", methods=["GET"])
+    @token_required
     def get_users():
 
         page = request.args.get("page", default=1, type=int)
@@ -176,9 +207,19 @@ def register_routes(app):
         stored_password = user["password"]
 
         if bcrypt.checkpw(password.encode("utf-8"), stored_password):
+
+            token = jwt.encode(
+                {
+                    "user_id": user["id"],
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+                },
+                current_app.config["SECRET_KEY"],
+                algorithm="HS256"
+            )   
+
             return jsonify({
-                "success": True,
-                "message": "Login successful"
+                "message": "Login successful",
+                "token": token
             })
 
         return jsonify({"error": "Invalid password"}), 401
