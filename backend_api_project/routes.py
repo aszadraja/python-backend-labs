@@ -33,6 +33,37 @@ def token_required(f):
 
     return decorated
 
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        token = None
+
+        if "Authorization" in request.headers:
+            token = request.headers["Authorization"].split(" ")[1]
+
+        if not token:
+            return jsonify({"error": "Token missing"}), 401
+
+        try:
+            data = jwt.decode(
+                token,
+                current_app.config["SECRET_KEY"],
+                algorithms=["HS256"]
+            )
+
+            if data["role"] != "admin":
+                return jsonify({"error": "Admin access required"}), 403
+
+        except jwt.ExpiredSignatureError:
+            return jsonify({"error": "Token expired"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"error": "Invalid token"}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 def register_routes(app):
 
     @app.route("/")
@@ -44,6 +75,7 @@ def register_routes(app):
     def create_user():
 
         data = request.get_json()
+        role = data.get("role", "user")
 
         if not data:
             return jsonify({"error": "Request body must be JSON"}), 400
@@ -61,6 +93,7 @@ def register_routes(app):
         if not password:
             return jsonify({"error": "Password required"}), 400
 
+
     # Hash password
         hashed_password = bcrypt.hashpw(
             password.encode("utf-8"),
@@ -70,8 +103,8 @@ def register_routes(app):
         conn = get_db_connection()
 
         conn.execute(
-            "INSERT INTO users (name, age, password) VALUES (?, ?, ?)",
-            (name, age, hashed_password)
+            "INSERT INTO users (name, age, password, role) VALUES (?, ?, ?, ?)",
+            (name, age, hashed_password, role)
         )
 
         conn.commit()
@@ -211,6 +244,7 @@ def register_routes(app):
             token = jwt.encode(
                 {
                     "user_id": user["id"],
+                    "role": user["role"],
                     "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
                 },
                 current_app.config["SECRET_KEY"],
@@ -223,3 +257,42 @@ def register_routes(app):
             })
 
         return jsonify({"error": "Invalid password"}), 401
+    
+    @app.route("/profile", methods=["GET"])
+    @token_required
+    def profile():
+
+        token = request.headers["Authorization"].split(" ")[1]
+
+        data = jwt.decode(
+            token,
+            current_app.config["SECRET_KEY"],
+            algorithms=["HS256"]
+        )
+
+        user_id = data["user_id"]
+
+        conn = get_db_connection()
+
+        user = conn.execute(
+            "SELECT id, name, age, role FROM users WHERE id = ?",
+            (user_id,)
+        ).fetchone()
+
+        conn.close()
+
+        return jsonify(dict(user))
+    
+    @app.route("/admin/users", methods=["GET"])
+    @admin_required
+    def admin_get_users():
+
+        conn = get_db_connection()
+
+        users = conn.execute(
+            "SELECT id, name, age, role FROM users"
+        ).fetchall()
+
+        conn.close()
+
+        return jsonify([dict(user) for user in users])
