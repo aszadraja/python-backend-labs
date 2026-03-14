@@ -27,3 +27,5 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 24 ✅: added global error handling and consistent API responsesadf
 - Day 25 ✅: Fix: added missing password variable in user registration
 - Day 26 ✅: implemented JWT authentication and protected routes
+- Day 27 ✅:  implemented role-based authorization and profile API
+- Day 28 ✅: refactor: improve API route structure
