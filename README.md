@@ -29,3 +29,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 26 ✅: implemented JWT authentication and protected routes
 - Day 27 ✅:  implemented role-based authorization and profile API
 - Day 28 ✅: refactor: improve API route structure
+- Day 29 ✅: implemented logout system with JWT blacklist
