@@ -1,0 +1,20 @@
+2026-03-24 22:43:04,232 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-24 22:43:04,232 - [33mPress CTRL+C to quit[0m
+2026-03-24 22:43:04,239 -  * Restarting with stat
+2026-03-24 22:43:05,333 -  * Debugger is active!
+2026-03-24 22:43:05,345 -  * Debugger PIN: 141-058-567
+2026-03-24 22:46:42,658 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-24 22:46:42,659 - [33mPress CTRL+C to quit[0m
+2026-03-24 22:46:42,664 -  * Restarting with stat
+2026-03-24 22:46:43,923 -  * Debugger is active!
+2026-03-24 22:46:43,937 -  * Debugger PIN: 141-058-567
+2026-03-24 22:52:46,150 - POST /users - 2026-03-24 17:22:46.150180
+2026-03-24 22:52:46,152 - 127.0.0.1 - - [24/Mar/2026 22:52:46] "[31m[1mPOST /users HTTP/1.1[0m" 400 -
+2026-03-24 23:01:43,877 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-24 23:01:43,878 - [33mPress CTRL+C to quit[0m
+2026-03-24 23:01:43,884 -  * Restarting with stat
+2026-03-24 23:01:44,982 -  * Debugger is active!
+2026-03-24 23:01:44,988 -  * Debugger PIN: 141-058-567

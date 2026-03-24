@@ -4,6 +4,37 @@ from functools import wraps
 from flask import jsonify, request, current_app
 import bcrypt
 from database import get_db_connection
+from time import time
+
+request_counts = {}
+RATE_LIMIT = 5 # request
+WINDOW = 60    # seconds
+
+def rate_limit(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        ip = request.remote_addr
+        current_time = time()
+
+        if ip not in request_counts:
+            request_counts[ip] = []
+        
+        request_counts[ip] = [
+            t for t in request_counts[ip]
+            if current_time - t < WINDOW
+        ]
+
+        if len(request_counts[ip]) >= RATE_LIMIT:
+            return jsonify({
+                "error":"Too many requests"
+            }), 429
+        
+        request_counts[ip].append(current_time)
+
+        return f(*args, **kwargs)
+    
+    return decorated
 
 # Token blacklist
 blacklisted_tokens = set()
