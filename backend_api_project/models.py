@@ -1,7 +1,5 @@
 from database import get_db_connection
 
-from database import get_db_connection
-
 def init_db():
     conn = get_db_connection()
 

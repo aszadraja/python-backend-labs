@@ -18,3 +18,335 @@
 2026-03-24 23:01:43,884 -  * Restarting with stat
 2026-03-24 23:01:44,982 -  * Debugger is active!
 2026-03-24 23:01:44,988 -  * Debugger PIN: 141-058-567
+2026-03-29 18:12:02,700 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:12:02,706 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:12:02,710 -  * Restarting with stat
+2026-03-29 18:12:03,960 -  * Debugger is active!
+2026-03-29 18:12:03,974 -  * Debugger PIN: 116-616-142
+2026-03-29 18:12:15,349 - GET / - 2026-03-29 12:42:15.348869
+2026-03-29 18:12:15,351 - 127.0.0.1 - - [29/Mar/2026 18:12:15] "GET / HTTP/1.1" 200 -
+2026-03-29 18:12:42,133 - POST /users - 2026-03-29 12:42:42.133542
+2026-03-29 18:12:42,654 - 127.0.0.1 - - [29/Mar/2026 18:12:42] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:12:52,974 - POST /login - 2026-03-29 12:42:52.974738
+2026-03-29 18:12:53,478 - 127.0.0.1 - - [29/Mar/2026 18:12:53] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:13:03,883 - GET /login - 2026-03-29 12:43:03.883153
+2026-03-29 18:13:03,884 - 127.0.0.1 - - [29/Mar/2026 18:13:03] "[31m[1mGET /login HTTP/1.1[0m" 405 -
+2026-03-29 18:13:14,489 - GET /users - 2026-03-29 12:43:14.489777
+2026-03-29 18:13:14,490 - 127.0.0.1 - - [29/Mar/2026 18:13:14] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 18:13:27,401 - POST /login - 2026-03-29 12:43:27.401927
+2026-03-29 18:13:27,907 - 127.0.0.1 - - [29/Mar/2026 18:13:27] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:14:11,505 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:14:11,505 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:14:11,508 -  * Restarting with stat
+2026-03-29 18:14:12,464 -  * Debugger is active!
+2026-03-29 18:14:12,469 -  * Debugger PIN: 116-616-142
+2026-03-29 18:14:17,941 - POST /login - 2026-03-29 12:44:17.941144
+2026-03-29 18:14:18,461 - 127.0.0.1 - - [29/Mar/2026 18:14:18] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:16:58,935 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 18:16:59,084 -  * Restarting with stat
+2026-03-29 18:17:00,141 -  * Debugger is active!
+2026-03-29 18:17:00,148 -  * Debugger PIN: 116-616-142
+2026-03-29 18:17:04,982 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:17:04,982 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:17:04,985 -  * Restarting with stat
+2026-03-29 18:17:05,855 -  * Debugger is active!
+2026-03-29 18:17:05,861 -  * Debugger PIN: 116-616-142
+2026-03-29 18:17:10,822 - GET / - 2026-03-29 12:47:10.822594
+2026-03-29 18:17:10,824 - 127.0.0.1 - - [29/Mar/2026 18:17:10] "GET / HTTP/1.1" 200 -
+2026-03-29 18:17:18,271 - POST /login - 2026-03-29 12:47:18.271817
+2026-03-29 18:17:18,288 - 127.0.0.1 - - [29/Mar/2026 18:17:18] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:17:30,220 - POST /users - 2026-03-29 12:47:30.220407
+2026-03-29 18:17:30,835 - 127.0.0.1 - - [29/Mar/2026 18:17:30] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:18:06,463 - POST /login - 2026-03-29 12:48:06.463227
+2026-03-29 18:18:06,491 - 127.0.0.1 - - [29/Mar/2026 18:18:06] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:21:47,371 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 18:21:47,505 -  * Restarting with stat
+2026-03-29 18:21:48,539 -  * Debugger is active!
+2026-03-29 18:21:48,544 -  * Debugger PIN: 116-616-142
+2026-03-29 18:21:55,106 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:21:55,107 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:21:55,112 -  * Restarting with stat
+2026-03-29 18:21:56,167 -  * Debugger is active!
+2026-03-29 18:21:56,173 -  * Debugger PIN: 116-616-142
+2026-03-29 18:22:05,660 - POST /users - 2026-03-29 12:52:05.660102
+2026-03-29 18:22:06,158 - 127.0.0.1 - - [29/Mar/2026 18:22:06] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:22:16,431 - POST /login - 2026-03-29 12:52:16.431529
+2026-03-29 18:22:16,938 - 127.0.0.1 - - [29/Mar/2026 18:22:16] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:23:00,752 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:23:00,753 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:23:00,757 -  * Restarting with stat
+2026-03-29 18:23:01,835 -  * Debugger is active!
+2026-03-29 18:23:01,840 -  * Debugger PIN: 116-616-142
+2026-03-29 18:23:05,521 - POST /login - 2026-03-29 12:53:05.521326
+2026-03-29 18:23:06,046 - 127.0.0.1 - - [29/Mar/2026 18:23:06] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:30:05,854 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:30:05,854 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:30:05,856 -  * Restarting with stat
+2026-03-29 18:30:06,300 -  * Debugger is active!
+2026-03-29 18:30:06,303 -  * Debugger PIN: 116-616-142
+2026-03-29 18:30:10,373 - POST /login - 2026-03-29 13:00:10.373031
+2026-03-29 18:30:10,374 - 127.0.0.1 - - [29/Mar/2026 18:30:10] "[33mPOST /login HTTP/1.1[0m" 404 -
+2026-03-29 18:30:18,206 - POST /users - 2026-03-29 13:00:18.206836
+2026-03-29 18:30:18,429 - 127.0.0.1 - - [29/Mar/2026 18:30:18] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:30:23,488 - POST /login - 2026-03-29 13:00:23.488757
+2026-03-29 18:30:23,500 - 127.0.0.1 - - [29/Mar/2026 18:30:23] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:31:41,365 - POST /login - 2026-03-29 13:01:41.365542
+2026-03-29 18:31:41,371 - 127.0.0.1 - - [29/Mar/2026 18:31:41] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:34:08,442 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 18:34:08,504 -  * Restarting with stat
+2026-03-29 18:34:09,020 -  * Debugger is active!
+2026-03-29 18:34:09,022 -  * Debugger PIN: 116-616-142
+2026-03-29 18:34:15,205 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:34:15,205 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:34:15,207 -  * Restarting with stat
+2026-03-29 18:34:15,697 -  * Debugger is active!
+2026-03-29 18:34:15,701 -  * Debugger PIN: 116-616-142
+2026-03-29 18:34:27,624 - GET /users - 2026-03-29 13:04:27.624801
+2026-03-29 18:34:27,625 - 127.0.0.1 - - [29/Mar/2026 18:34:27] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 18:34:37,270 - POST /users - 2026-03-29 13:04:37.270215
+2026-03-29 18:34:37,504 - 127.0.0.1 - - [29/Mar/2026 18:34:37] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:34:45,229 - POST /login - 2026-03-29 13:04:45.229482
+2026-03-29 18:34:45,470 - 127.0.0.1 - - [29/Mar/2026 18:34:45] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:36:13,265 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 18:36:13,314 -  * Restarting with stat
+2026-03-29 18:36:13,858 -  * Debugger is active!
+2026-03-29 18:36:13,863 -  * Debugger PIN: 116-616-142
+2026-03-29 18:36:20,354 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:36:20,354 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:36:20,356 -  * Restarting with stat
+2026-03-29 18:36:20,842 -  * Debugger is active!
+2026-03-29 18:36:20,844 -  * Debugger PIN: 116-616-142
+2026-03-29 18:36:28,875 - POST /users - 2026-03-29 13:06:28.875567
+2026-03-29 18:36:29,103 - 127.0.0.1 - - [29/Mar/2026 18:36:29] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 18:36:35,676 - POST /login - 2026-03-29 13:06:35.676489
+2026-03-29 18:36:35,901 - 127.0.0.1 - - [29/Mar/2026 18:36:35] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 18:40:30,928 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 18:40:30,928 - [33mPress CTRL+C to quit[0m
+2026-03-29 18:40:30,930 -  * Restarting with stat
+2026-03-29 18:40:31,372 -  * Debugger is active!
+2026-03-29 18:40:31,375 -  * Debugger PIN: 116-616-142
+2026-03-29 18:40:38,631 - POST /login - 2026-03-29 13:10:38.631170
+2026-03-29 18:40:38,858 - 127.0.0.1 - - [29/Mar/2026 18:40:38] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 19:51:55,186 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 19:51:55,186 - [33mPress CTRL+C to quit[0m
+2026-03-29 19:51:55,190 -  * Restarting with stat
+2026-03-29 19:51:56,113 -  * Debugger is active!
+2026-03-29 19:51:56,121 -  * Debugger PIN: 116-616-142
+2026-03-29 19:52:02,100 - POST /login - 2026-03-29 14:22:02.100471
+2026-03-29 19:52:02,648 - 127.0.0.1 - - [29/Mar/2026 19:52:02] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 19:52:14,052 - POST /users - 2026-03-29 14:22:14.052528
+2026-03-29 19:52:14,560 - 127.0.0.1 - - [29/Mar/2026 19:52:14] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-29 19:52:21,394 - POST /login - 2026-03-29 14:22:21.394845
+2026-03-29 19:52:21,904 - 127.0.0.1 - - [29/Mar/2026 19:52:21] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 19:58:52,704 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 19:58:52,846 -  * Restarting with stat
+2026-03-29 19:58:53,872 -  * Debugger is active!
+2026-03-29 19:58:53,877 -  * Debugger PIN: 116-616-142
+2026-03-29 20:03:40,190 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 20:03:40,322 -  * Restarting with stat
+2026-03-29 20:03:41,451 -  * Debugger is active!
+2026-03-29 20:03:41,457 -  * Debugger PIN: 116-616-142
+2026-03-29 20:06:02,053 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 20:06:02,054 - [33mPress CTRL+C to quit[0m
+2026-03-29 20:06:02,058 -  * Restarting with stat
+2026-03-29 20:06:02,937 -  * Debugger is active!
+2026-03-29 20:06:02,942 -  * Debugger PIN: 116-616-142
+2026-03-29 20:06:09,056 - POST /login - 2026-03-29 14:36:09.056274
+2026-03-29 20:06:09,618 - 127.0.0.1 - - [29/Mar/2026 20:06:09] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 20:08:10,166 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 20:08:10,167 - [33mPress CTRL+C to quit[0m
+2026-03-29 20:08:10,171 -  * Restarting with stat
+2026-03-29 20:08:11,145 -  * Debugger is active!
+2026-03-29 20:08:11,150 -  * Debugger PIN: 116-616-142
+2026-03-29 20:08:16,071 - POST /login - 2026-03-29 14:38:16.071583
+2026-03-29 20:08:16,578 - 127.0.0.1 - - [29/Mar/2026 20:08:16] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 20:12:49,808 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 20:12:49,809 - [33mPress CTRL+C to quit[0m
+2026-03-29 20:12:49,813 -  * Restarting with stat
+2026-03-29 20:12:50,792 -  * Debugger is active!
+2026-03-29 20:12:50,797 -  * Debugger PIN: 116-616-142
+2026-03-29 20:12:57,134 - POST /login - 2026-03-29 14:42:57.134583
+2026-03-29 20:12:57,667 - 127.0.0.1 - - [29/Mar/2026 20:12:57] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2026-03-29 20:21:23,009 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-29 20:21:23,171 -  * Restarting with stat
+2026-03-29 20:21:24,271 -  * Debugger is active!
+2026-03-29 20:21:24,279 -  * Debugger PIN: 116-616-142
+2026-03-29 20:21:28,469 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 20:21:28,470 - [33mPress CTRL+C to quit[0m
+2026-03-29 20:21:28,473 -  * Restarting with stat
+2026-03-29 20:21:29,442 -  * Debugger is active!
+2026-03-29 20:21:29,447 -  * Debugger PIN: 116-616-142
+2026-03-29 20:21:38,433 - POST /login - 2026-03-29 14:51:38.433091
+2026-03-29 20:21:39,031 - 127.0.0.1 - - [29/Mar/2026 20:21:39] "POST /login HTTP/1.1" 200 -
+2026-03-29 21:14:31,696 - GET /users - 2026-03-29 15:44:31.696885
+2026-03-29 21:14:31,697 - 127.0.0.1 - - [29/Mar/2026 21:14:31] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 21:20:19,732 - POST /login - 2026-03-29 15:50:19.732723
+2026-03-29 21:20:20,239 - 127.0.0.1 - - [29/Mar/2026 21:20:20] "POST /login HTTP/1.1" 200 -
+2026-03-29 21:21:36,955 - GET /users - 2026-03-29 15:51:36.955516
+2026-03-29 21:21:36,956 - 127.0.0.1 - - [29/Mar/2026 21:21:36] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 21:40:43,785 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 21:40:43,786 - [33mPress CTRL+C to quit[0m
+2026-03-29 21:40:43,806 -  * Restarting with stat
+2026-03-29 21:40:44,880 -  * Debugger is active!
+2026-03-29 21:40:44,885 -  * Debugger PIN: 116-616-142
+2026-03-29 21:40:57,029 - POST /login - 2026-03-29 16:10:57.029212
+2026-03-29 21:40:57,527 - 127.0.0.1 - - [29/Mar/2026 21:40:57] "POST /login HTTP/1.1" 200 -
+2026-03-29 21:43:32,216 - POST /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoidXNlciIsImV4cCI6MTc3NDgwNzg1N30.5WTDDbNyh49RFpVXC-CyYBv5wEaK3wROood7Jndx-Ug - 2026-03-29 16:13:32.216612
+2026-03-29 21:43:32,217 - 127.0.0.1 - - [29/Mar/2026 21:43:32] "[33mPOST /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoidXNlciIsImV4cCI6MTc3NDgwNzg1N30.5WTDDbNyh49RFpVXC-CyYBv5wEaK3wROood7Jndx-Ug HTTP/1.1[0m" 404 -
+2026-03-29 21:43:43,610 - GET /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoidXNlciIsImV4cCI6MTc3NDgwNzg1N30.5WTDDbNyh49RFpVXC-CyYBv5wEaK3wROood7Jndx-Ug - 2026-03-29 16:13:43.610283
+2026-03-29 21:43:43,610 - 127.0.0.1 - - [29/Mar/2026 21:43:43] "[33mGET /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoidXNlciIsImV4cCI6MTc3NDgwNzg1N30.5WTDDbNyh49RFpVXC-CyYBv5wEaK3wROood7Jndx-Ug HTTP/1.1[0m" 404 -
+2026-03-29 21:43:52,810 - GET / - 2026-03-29 16:13:52.810454
+2026-03-29 21:43:52,811 - 127.0.0.1 - - [29/Mar/2026 21:43:52] "GET / HTTP/1.1" 200 -
+2026-03-29 21:44:02,094 - GET /users - 2026-03-29 16:14:02.094441
+2026-03-29 21:44:02,095 - 127.0.0.1 - - [29/Mar/2026 21:44:02] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 21:48:40,283 - POST /login - 2026-03-29 16:18:40.283718
+2026-03-29 21:48:40,284 - 127.0.0.1 - - [29/Mar/2026 21:48:40] "[31m[1mPOST /login HTTP/1.1[0m" 415 -
+2026-03-29 21:49:15,660 - POST /login - 2026-03-29 16:19:15.660538
+2026-03-29 21:49:15,661 - 127.0.0.1 - - [29/Mar/2026 21:49:15] "[31m[1mPOST /login HTTP/1.1[0m" 415 -
+2026-03-29 21:49:34,232 - POST /users - 2026-03-29 16:19:34.232200
+2026-03-29 21:49:34,232 - 127.0.0.1 - - [29/Mar/2026 21:49:34] "[31m[1mPOST /users HTTP/1.1[0m" 415 -
+2026-03-29 22:16:47,223 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-29 22:16:47,224 - [33mPress CTRL+C to quit[0m
+2026-03-29 22:16:47,226 -  * Restarting with stat
+2026-03-29 22:16:47,789 -  * Debugger is active!
+2026-03-29 22:16:47,791 -  * Debugger PIN: 116-616-142
+2026-03-29 22:16:53,974 - POST /users - 2026-03-29 16:46:53.974508
+2026-03-29 22:16:53,975 - 127.0.0.1 - - [29/Mar/2026 22:16:53] "[31m[1mPOST /users HTTP/1.1[0m" 415 -
+2026-03-29 22:17:17,016 - POST /users - 2026-03-29 16:47:17.016060
+2026-03-29 22:17:17,016 - 127.0.0.1 - - [29/Mar/2026 22:17:17] "[31m[1mPOST /users HTTP/1.1[0m" 415 -
+2026-03-29 22:19:43,519 - POST /login - 2026-03-29 16:49:43.519090
+2026-03-29 22:19:43,519 - 127.0.0.1 - - [29/Mar/2026 22:19:43] "[31m[1mPOST /login HTTP/1.1[0m" 415 -
+2026-03-29 22:20:25,387 - GET /users - 2026-03-29 16:50:25.387174
+2026-03-29 22:20:25,387 - 127.0.0.1 - - [29/Mar/2026 22:20:25] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-29 22:22:19,223 - POST /users - 2026-03-29 16:52:19.223066
+2026-03-29 22:22:19,445 - 127.0.0.1 - - [29/Mar/2026 22:22:19] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-30 22:57:48,753 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-30 22:57:48,754 - [33mPress CTRL+C to quit[0m
+2026-03-30 22:57:48,757 -  * Restarting with stat
+2026-03-30 22:57:49,745 -  * Debugger is active!
+2026-03-30 22:57:49,759 -  * Debugger PIN: 571-911-383
+2026-03-30 22:58:59,684 - POST /users - 2026-03-30 17:28:59.682989
+2026-03-30 22:59:00,195 - 127.0.0.1 - - [30/Mar/2026 22:59:00] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-30 22:59:25,454 - POST /login - 2026-03-30 17:29:25.454339
+2026-03-30 22:59:25,971 - 127.0.0.1 - - [30/Mar/2026 22:59:25] "POST /login HTTP/1.1" 200 -
+2026-03-30 22:59:39,459 - GET /users - 2026-03-30 17:29:39.459613
+2026-03-30 22:59:39,460 - 127.0.0.1 - - [30/Mar/2026 22:59:39] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 20:47:57,245 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 20:47:57,246 - [33mPress CTRL+C to quit[0m
+2026-03-31 20:47:57,252 -  * Restarting with stat
+2026-03-31 20:47:58,368 -  * Debugger is active!
+2026-03-31 20:47:58,382 -  * Debugger PIN: 376-039-672
+2026-03-31 20:48:16,339 - GET / - 2026-03-31 15:18:16.339044
+2026-03-31 20:48:16,341 - 127.0.0.1 - - [31/Mar/2026 20:48:16] "GET / HTTP/1.1" 200 -
+2026-03-31 20:48:16,688 - GET /favicon.ico - 2026-03-31 15:18:16.688572
+2026-03-31 20:48:16,689 - 127.0.0.1 - - [31/Mar/2026 20:48:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-31 20:48:40,387 - POST /users - 2026-03-31 15:18:40.387244
+2026-03-31 20:48:40,894 - 127.0.0.1 - - [31/Mar/2026 20:48:40] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-03-31 20:48:49,363 - POST /login - 2026-03-31 15:18:49.363554
+2026-03-31 20:48:49,864 - 127.0.0.1 - - [31/Mar/2026 20:48:49] "POST /login HTTP/1.1" 200 -
+2026-03-31 20:49:16,797 - GET /users - 2026-03-31 15:19:16.797148
+2026-03-31 20:49:16,800 - 127.0.0.1 - - [31/Mar/2026 20:49:16] "GET /users HTTP/1.1" 200 -
+2026-03-31 20:49:51,801 - GET /users - 2026-03-31 15:19:51.801470
+2026-03-31 20:49:51,809 - 127.0.0.1 - - [31/Mar/2026 20:49:51] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 20:51:47,599 - GET /users - 2026-03-31 15:21:47.599127
+2026-03-31 20:51:47,600 - 127.0.0.1 - - [31/Mar/2026 20:51:47] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 21:00:47,956 - POST /login - 2026-03-31 15:30:47.955992
+2026-03-31 21:00:48,438 - 127.0.0.1 - - [31/Mar/2026 21:00:48] "POST /login HTTP/1.1" 200 -
+2026-03-31 21:01:00,144 - GET /users - 2026-03-31 15:31:00.144110
+2026-03-31 21:01:00,144 - 127.0.0.1 - - [31/Mar/2026 21:01:00] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 21:01:11,906 - POST /login - 2026-03-31 15:31:11.906540
+2026-03-31 21:01:12,422 - 127.0.0.1 - - [31/Mar/2026 21:01:12] "POST /login HTTP/1.1" 200 -
+2026-03-31 21:01:41,856 - GET /users - 2026-03-31 15:31:41.856157
+2026-03-31 21:01:41,859 - 127.0.0.1 - - [31/Mar/2026 21:01:41] "GET /users HTTP/1.1" 200 -
+2026-03-31 21:01:59,172 - DELETE /users/1 - 2026-03-31 15:31:59.172177
+2026-03-31 21:01:59,172 - 127.0.0.1 - - [31/Mar/2026 21:01:59] "[33mDELETE /users/1 HTTP/1.1[0m" 404 -
+2026-03-31 21:02:02,555 - DELETE /users - 2026-03-31 15:32:02.555568
+2026-03-31 21:02:02,563 - 127.0.0.1 - - [31/Mar/2026 21:02:02] "[31m[1mDELETE /users HTTP/1.1[0m" 405 -
+2026-03-31 21:28:10,250 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 21:28:10,251 - [33mPress CTRL+C to quit[0m
+2026-03-31 21:28:10,255 -  * Restarting with stat
+2026-03-31 21:28:11,269 -  * Debugger is active!
+2026-03-31 21:28:11,275 -  * Debugger PIN: 376-039-672
+2026-03-31 21:28:15,286 - GET / - 2026-03-31 15:58:15.286548
+2026-03-31 21:28:15,288 - 127.0.0.1 - - [31/Mar/2026 21:28:15] "GET / HTTP/1.1" 200 -
+2026-03-31 21:30:17,250 - POST /login - 2026-03-31 16:00:17.249928
+2026-03-31 21:30:17,749 - 127.0.0.1 - - [31/Mar/2026 21:30:17] "POST /login HTTP/1.1" 200 -
+2026-03-31 21:30:35,581 - GET /users - 2026-03-31 16:00:35.581463
+2026-03-31 21:30:35,584 - 127.0.0.1 - - [31/Mar/2026 21:30:35] "GET /users HTTP/1.1" 200 -
+2026-03-31 21:30:52,785 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 21:30:52,786 - [33mPress CTRL+C to quit[0m
+2026-03-31 21:30:52,791 -  * Restarting with stat
+2026-03-31 21:30:53,765 -  * Debugger is active!
+2026-03-31 21:30:53,770 -  * Debugger PIN: 376-039-672
+2026-03-31 21:31:00,414 - GET /users - 2026-03-31 16:01:00.414197
+2026-03-31 21:31:00,420 - 127.0.0.1 - - [31/Mar/2026 21:31:00] "GET /users HTTP/1.1" 200 -
+2026-03-31 21:31:32,885 - POST /logout - 2026-03-31 16:01:32.885400
+2026-03-31 21:31:32,886 - 127.0.0.1 - - [31/Mar/2026 21:31:32] "POST /logout HTTP/1.1" 200 -
+2026-03-31 21:31:42,185 - GET /users - 2026-03-31 16:01:42.185238
+2026-03-31 21:31:42,186 - 127.0.0.1 - - [31/Mar/2026 21:31:42] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 21:32:43,775 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-31 21:32:43,992 -  * Restarting with stat
+2026-03-31 21:32:45,134 -  * Debugger is active!
+2026-03-31 21:32:45,140 -  * Debugger PIN: 376-039-672
+2026-03-31 21:32:56,282 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-31 21:32:56,386 -  * Restarting with stat
+2026-03-31 21:32:57,688 -  * Debugger is active!
+2026-03-31 21:32:57,695 -  * Debugger PIN: 376-039-672
+2026-03-31 21:33:01,059 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 21:33:01,059 - [33mPress CTRL+C to quit[0m
+2026-03-31 21:33:01,065 -  * Restarting with stat
+2026-03-31 21:33:02,246 -  * Debugger is active!
+2026-03-31 21:33:02,254 -  * Debugger PIN: 376-039-672
+2026-03-31 21:33:12,569 - POST /login - 2026-03-31 16:03:12.569405
+2026-03-31 21:33:13,074 - 127.0.0.1 - - [31/Mar/2026 21:33:13] "POST /login HTTP/1.1" 200 -
+2026-03-31 21:33:30,749 - GET /users - 2026-03-31 16:03:30.749790
+2026-03-31 21:33:30,752 - 127.0.0.1 - - [31/Mar/2026 21:33:30] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-03-31 21:34:08,839 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-31 21:34:08,982 -  * Restarting with stat
+2026-03-31 21:34:10,206 -  * Debugger is active!
+2026-03-31 21:34:10,211 -  * Debugger PIN: 376-039-672
+2026-03-31 21:34:15,362 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 21:34:15,363 - [33mPress CTRL+C to quit[0m
+2026-03-31 21:34:15,368 -  * Restarting with stat
+2026-03-31 21:34:16,503 -  * Debugger is active!
+2026-03-31 21:34:16,508 -  * Debugger PIN: 376-039-672
+2026-03-31 21:34:24,455 - POST /login - 2026-03-31 16:04:24.455785
+2026-03-31 21:34:24,945 - 127.0.0.1 - - [31/Mar/2026 21:34:24] "POST /login HTTP/1.1" 200 -
+2026-03-31 21:34:44,360 - GET /users - 2026-03-31 16:04:44.359990
+2026-03-31 21:34:44,363 - 127.0.0.1 - - [31/Mar/2026 21:34:44] "GET /users HTTP/1.1" 200 -
+2026-03-31 21:34:50,833 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-03-31 21:34:50,973 -  * Restarting with stat
+2026-03-31 21:34:52,138 -  * Debugger is active!
+2026-03-31 21:34:52,143 -  * Debugger PIN: 376-039-672
+2026-03-31 21:34:57,071 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-31 21:34:57,071 - [33mPress CTRL+C to quit[0m
+2026-03-31 21:34:57,075 -  * Restarting with stat
+2026-03-31 21:34:58,204 -  * Debugger is active!
+2026-03-31 21:34:58,209 -  * Debugger PIN: 376-039-672
+2026-03-31 21:35:00,028 - GET /users - 2026-03-31 16:05:00.028193
+2026-03-31 21:35:00,037 - 127.0.0.1 - - [31/Mar/2026 21:35:00] "GET /users HTTP/1.1" 200 -
+2026-03-31 21:41:29,164 - GET /users - 2026-03-31 16:11:29.164221
+2026-03-31 21:41:29,170 - 127.0.0.1 - - [31/Mar/2026 21:41:29] "GET /users HTTP/1.1" 200 -

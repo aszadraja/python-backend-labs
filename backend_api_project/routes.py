@@ -1,119 +1,47 @@
+from flask import Flask, jsonify, request, current_app
+from database import get_db_connection
+import bcrypt
 import jwt
 import datetime
 from functools import wraps
-from flask import jsonify, request, current_app
-import bcrypt
-from database import get_db_connection
 from time import time
 
-request_counts = {}
-RATE_LIMIT = 5 # request
-WINDOW = 60    # seconds
+request_count = {}
+RATE_LIMIT = 5
+WINDOW = 60
 
-def rate_limit(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-
-        ip = request.remote_addr
-        current_time = time()
-
-        if ip not in request_counts:
-            request_counts[ip] = []
-        
-        request_counts[ip] = [
-            t for t in request_counts[ip]
-            if current_time - t < WINDOW
-        ]
-
-        if len(request_counts[ip]) >= RATE_LIMIT:
-            return jsonify({
-                "error":"Too many requests"
-            }), 429
-        
-        request_counts[ip].append(current_time)
-
-        return f(*args, **kwargs)
-    
-    return decorated
-
-# Token blacklist
 blacklisted_tokens = set()
 
 
-# -------------------------------
-# Helper: Get token from header
-# -------------------------------
-def get_token():
-    auth_header = request.headers.get("Authorization")
-
-    if not auth_header:
-        return None
-
-    parts = auth_header.split(" ")
-
-    if len(parts) != 2:
-        return None
-
-    return parts[1]
-
-
-# -------------------------------
-# Token Required Decorator
-# -------------------------------
+# -----------------------------
+# Token Required Middleware
+# -----------------------------
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
 
-        token = get_token()
+        token = None
+
+        if "Authorization" in request.headers:
+            token = request.headers["Authorization"].split(" ")[1]
 
         if not token:
-            return jsonify({"error": "Token missing"}), 401
+            return jsonify({"error": "Token Missing"}), 401
 
         if token in blacklisted_tokens:
-            return jsonify({"error": "Token revoked"}), 401
-
-        try:
-            jwt.decode(
-                token,
-                current_app.config["SECRET_KEY"],
-                algorithms=["HS256"]
-            )
-
-        except jwt.ExpiredSignatureError:
-            return jsonify({"error": "Token expired"}), 401
-
-        except jwt.InvalidTokenError:
-            return jsonify({"error": "Invalid token"}), 401
-
-        return f(*args, **kwargs)
-
-    return decorated
-
-
-# -------------------------------
-# Admin Required Decorator
-# -------------------------------
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-
-        token = get_token()
-
-        if not token:
-            return jsonify({"error": "Token missing"}), 401
-
-        if token in blacklisted_tokens:
-            return jsonify({"error": "Token revoked"}), 401
+            return jsonify({"error": "Token has been revoked"}), 401
 
         try:
             data = jwt.decode(
                 token,
                 current_app.config["SECRET_KEY"],
-                algorithms=["HS256"]
+                algorithms=["HS256"],
+                leeway=5   # prevent seconds delay issue
             )
+            print("Decoded:", data)
+            print("Current:", int(time()))
 
-            if data["role"] != "admin":
-                return jsonify({"error": "Admin access required"}), 403
+            request.user_id = data["user_id"]
 
         except jwt.ExpiredSignatureError:
             return jsonify({"error": "Token expired"}), 401
@@ -126,30 +54,61 @@ def admin_required(f):
     return decorated
 
 
-# -------------------------------
+# -----------------------------
+# Rate Limit Middleware
+# -----------------------------
+def rate_limit(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        ip = request.remote_addr
+        now = time()
+
+        if ip not in request_count:
+            request_count[ip] = []
+
+        request_count[ip] = [
+            t for t in request_count[ip]
+            if now - t < WINDOW
+        ]
+
+        if len(request_count[ip]) >= RATE_LIMIT:
+            return jsonify({
+                "error": "Too many requests"
+            }), 429
+
+        request_count[ip].append(now)
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+# -----------------------------
 # Routes
-# -------------------------------
+# -----------------------------
 def register_routes(app):
 
     @app.route("/")
     def home():
-        return "Backend API running!"
+        return "Backend API Running"
 
-    # -------------------------------
-    # CREATE USER
-    # -------------------------------
+
+    # -----------------------------
+    # Create User
+    # -----------------------------
     @app.route("/users", methods=["POST"])
+    @rate_limit
     def create_user():
 
         data = request.get_json()
 
         if not data:
-            return jsonify({"error": "Request body must be JSON"}), 400
+            return jsonify({"error": "Invalid input"}), 400
 
-        name = data.get("name")
+        name = data.get("name").strip().lower()
         age = data.get("age")
         password = data.get("password")
-        role = data.get("role", "user")
 
         if not name:
             return jsonify({"error": "Name required"}), 400
@@ -163,68 +122,40 @@ def register_routes(app):
         hashed_password = bcrypt.hashpw(
             password.encode("utf-8"),
             bcrypt.gensalt()
-        )
+        ).decode("utf-8")
 
         conn = get_db_connection()
 
         conn.execute(
-            "INSERT INTO users (name, age, password, role) VALUES (?, ?, ?, ?)",
-            (name, age, hashed_password, role)
+            "INSERT INTO users (name, age, password) VALUES (?, ?, ?)",
+            (name, age, hashed_password)
         )
 
         conn.commit()
         conn.close()
 
-        return jsonify({"message": "User registered successfully"}), 201
+        return jsonify({
+            "success": True,
+            "message": "User created"
+        })
 
-    # -------------------------------
-    # GET USERS (Protected)
-    # -------------------------------
-    @app.route("/users", methods=["GET"])
-    @token_required
-    def get_users():
 
-        page = request.args.get("page", 1, type=int)
-        limit = request.args.get("limit", 5, type=int)
-        search = request.args.get("search", "", type=str)
-
-        offset = (page - 1) * limit
-
-        conn = get_db_connection()
-
-        if search:
-            users = conn.execute(
-                "SELECT id,name,age,role FROM users WHERE name LIKE ? LIMIT ? OFFSET ?",
-                (f"%{search}%", limit, offset)
-            ).fetchall()
-        else:
-            users = conn.execute(
-                "SELECT id,name,age,role FROM users LIMIT ? OFFSET ?",
-                (limit, offset)
-            ).fetchall()
-
-        conn.close()
-
-        return jsonify([dict(user) for user in users])
-
-    # -------------------------------
-    # LOGIN
-    # -------------------------------
+    # -----------------------------
+    # Login
+    # -----------------------------
     @app.route("/login", methods=["POST"])
+    @rate_limit
     def login():
 
         data = request.get_json()
 
-        if not data:
-            return jsonify({"error": "JSON required"}), 400
-
-        name = data.get("name")
+        name = data.get("name").strip().lower()
         password = data.get("password")
 
         conn = get_db_connection()
 
         user = conn.execute(
-            "SELECT * FROM users WHERE name = ?",
+            "SELECT * FROM users WHERE name=?",
             (name,)
         ).fetchone()
 
@@ -233,83 +164,184 @@ def register_routes(app):
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        stored_password = user["password"]
+        if bcrypt.checkpw(
+            password.encode("utf-8"),
+            user["password"].encode("utf-8")
+        ):
 
-        if bcrypt.checkpw(password.encode("utf-8"), stored_password):
-
-            token = jwt.encode(
+            access_token = jwt.encode(
                 {
                     "user_id": user["id"],
-                    "role": user["role"],
-                    "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+                    #"role": user["role"],
+                    "exp": datetime.datetime.utcnow()
+                    + datetime.timedelta(
+                        minutes=current_app.config["ACCESS_TOKEN_EXPIRE"]
+                    )
+                },
+                current_app.config["SECRET_KEY"],
+                algorithm="HS256"
+            )
+
+            refresh_token = jwt.encode(
+                {
+                    "user_id": user["id"],
+                    "exp": datetime.datetime.utcnow()
+                    + datetime.timedelta(
+                        days=current_app.config["REFRESH_TOKEN_EXPIRE"]
+                    )
                 },
                 current_app.config["SECRET_KEY"],
                 algorithm="HS256"
             )
 
             return jsonify({
-                "message": "Login successful",
-                "token": token
+                "access_token": access_token,
+                "refresh_token": refresh_token
             })
 
         return jsonify({"error": "Invalid password"}), 401
 
-    # -------------------------------
-    # PROFILE
-    # -------------------------------
-    @app.route("/profile", methods=["GET"])
+
+    # -----------------------------
+    # Get Users
+    # -----------------------------
+    @app.route("/users", methods=["GET"])
     @token_required
-    def profile():
+    @rate_limit
+    def get_users():
 
-        token = get_token()
+        page = request.args.get("page", 1, type=int)
+        limit = request.args.get("limit", 5, type=int)
 
-        data = jwt.decode(
-            token,
-            current_app.config["SECRET_KEY"],
-            algorithms=["HS256"]
-        )
-
-        user_id = data["user_id"]
-
-        conn = get_db_connection()
-
-        user = conn.execute(
-            "SELECT id,name,age,role FROM users WHERE id=?",
-            (user_id,)
-        ).fetchone()
-
-        conn.close()
-
-        return jsonify(dict(user))
-
-    # -------------------------------
-    # ADMIN USERS
-    # -------------------------------
-    @app.route("/admin/users", methods=["GET"])
-    @admin_required
-    def admin_get_users():
+        offset = (page - 1) * limit
 
         conn = get_db_connection()
 
         users = conn.execute(
-            "SELECT id,name,age,role FROM users"
+            "SELECT * FROM users LIMIT ? OFFSET ?",
+            (limit, offset)
         ).fetchall()
 
         conn.close()
 
-        return jsonify([dict(user) for user in users])
+        return jsonify({
+            "success": True,
+            "data": [dict(user) for user in users]
+        })
+    
+    # -----------------------------
+    # Refresh Route
+    # -----------------------------
+    @app.route("/refresh", methods=["POST"])
+    def refresh():
+        data = request.get_json()
+        refresh_token = data.get("refresh_token")
 
-    # -------------------------------
-    # LOGOUT
-    # -------------------------------
+        try:
+            decoded = jwt.decode(
+                refresh_token,
+                current_app.config["SECRET_KEY"],
+                algorithms=["HS256"]
+            )
+
+            access_token = jwt.encode(
+                {
+                    "user_id": decoded["user_id"],
+                    "exp": datetime.datetime.utcnow()
+                    + datetime.timedelta(
+                        minutes=current_app.config["ACCESS_TOKEN_EXPIRE"]
+                    )
+                },
+                current_app.config["SECRET_KEY"],
+                algorithm="HS256"
+            )
+
+            return jsonify({
+                "access_token": access_token
+            })
+        
+        except jwt.ExpiredSignatureError:
+            return jsonify({
+                "error": "Refresh token expired"
+            }), 401
+        
+        except jwt.InvalidTokenError:
+            return jsonify({
+                "error": "Invalid Token error"
+            }), 401
+
+    # -----------------------------
+    # Update User
+    # -----------------------------
+    @app.route("/users/<int:user_id>", methods=["PUT"])
+    @token_required
+    def update_user(user_id):
+
+        data = request.get_json()
+
+        name = data.get("name").strip().lower()
+        age = data.get("age")
+
+        conn = get_db_connection()
+
+        conn.execute(
+            "UPDATE users SET name=?, age=? WHERE id=?",
+            (name, age, user_id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "User updated"
+        })
+
+
+    # -----------------------------
+    # Delete Users
+    # -----------------------------
+    @app.route("/users", methods=["DELETE"])
+    @token_required
+    def delete_users():
+
+        conn = get_db_connection()
+
+        conn.execute("DELETE FROM users")
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "Users deleted"
+        })
+
+
+    # -----------------------------
+    # Logout
+    # -----------------------------
     @app.route("/logout", methods=["POST"])
     @token_required
     def logout():
 
-        token = get_token()
+        token = request.headers["Authorization"].split(" ")[1]
 
         blacklisted_tokens.add(token)
 
         return jsonify({
             "message": "Logged out successfully"
         })
+
+
+# -----------------------------
+# Main App
+# -----------------------------
+if __name__ == "__main__":
+
+    app = Flask(__name__)
+
+    app.config["SECRET_KEY"] = "super_secret_key"
+    app.config["JWT_EXPIRATION"] = 60   # seconds
+
+    register_routes(app)
+
+    app.run(debug=True)
