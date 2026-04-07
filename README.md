@@ -31,3 +31,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 28 ✅: refactor: improve API route structure
 - Day 29 ✅: implemented logout system with JWT blacklist
 - Day 30 ✅: added request logging and rate limiting
+- Day 31 ✅: implemented refresh token authentication
