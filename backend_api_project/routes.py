@@ -1,3 +1,5 @@
+import os
+from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, current_app
 from database import get_db_connection
 import bcrypt
@@ -408,7 +410,79 @@ def register_routes(app):
 
         return jsonify({"message": "Password reset successful"})
 
+    #-------------------------
+    #Upload Profile Image Route
+    #-------------------------
+    @app.route("/upload-profile", methods=["POST"])
+    @token_required
+    def upload_profile():
 
+        if "file" not in request.files:
+            return jsonify({"error": "No file provided"}), 400
+        
+        file = request.files["files"]
+
+        if file.filename == "":
+            return jsonify({"error": "Empty filename"}), 400
+        
+        filename = secure_filename(file.filename)
+
+        upload_path = os.path.join("uploads", filename)
+
+        file.save(upload_path)
+
+        token = request.headers["Authorization"].split(" ")[1]
+
+        decoded = jwt.decode(
+            token,
+            current_app.config["SECRET_KEY"],
+            algorithms=["HS256"]
+        )
+
+        user_id = decoded["user_id"]
+
+        conn = get_db_connection()
+
+        conn.execute(
+            "UPDATE users SET profile_image = ? WHERE id = ?",
+            (upload_path, user_id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "Profile image uploaded",
+            "file": upload_path
+        })
+    
+    #--------------------------
+    # Get Profile Route
+    #--------------------------
+    @app.route("/profile", methods=["GET"])
+    @token_required
+    def profile():
+
+        token = request.headers["Authorization"].split(" ")[1]
+
+        data = jwt.decode(
+            token,
+            current_app.config["SECRET_KEY"],
+            algorithms=["HS256"]
+        )
+
+        user_id = data["user_id"]
+
+        conn = get_db_connection()
+
+        user = conn.execute(
+            "SELECT id, name, age, role, profile_image FROM users WHERE id = ?",
+            (user_id,)
+        ).fetchone()
+
+        conn.close()
+
+        return jsonify(dict(user))
 # -----------------------------
 # Main App
 # -----------------------------

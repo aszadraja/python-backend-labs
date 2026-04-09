@@ -32,3 +32,5 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 29 ✅: implemented logout system with JWT blacklist
 - Day 30 ✅: added request logging and rate limiting
 - Day 31 ✅: implemented refresh token authentication
+- Day 32 ✅: implemented password reset system
+- Day 33 ✅: implemented profile image upload API

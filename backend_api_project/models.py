@@ -9,7 +9,9 @@ def init_db():
             name TEXT NOT NULL,
             age INTEGER NOT NULL,
             password TEXT NOT NULL,
-            role TEXT DEFAULT 'user'
+            role TEXT DEFAULT 'user',
+            reset_token TEXT,
+            profile_image TEXT
         )
     """)
 
