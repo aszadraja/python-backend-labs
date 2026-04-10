@@ -5,6 +5,7 @@ from database import get_db_connection
 import bcrypt
 import jwt
 import datetime
+import sqlite3
 from functools import wraps
 from time import time
 import secrets
@@ -111,6 +112,7 @@ def register_routes(app):
             return jsonify({"error": "Name required"}), 400
 
         name = name.strip().lower()
+        verification_token = secrets.token_hex(16)
 
         if not isinstance(age, int):
             return jsonify({"error": "Age must be integer"}), 400
@@ -127,17 +129,49 @@ def register_routes(app):
 
         try:
             conn.execute(
-                "INSERT INTO users (name, age, password) VALUES (?, ?, ?)",
-                (name, age, hashed_password)
+                "INSERT INTO users (name, age, password, verification_token) VALUES (?, ?, ?, ?)",
+                (name, age, hashed_password, verification_token)
             )
             conn.commit()
-        except Exception:
+        except sqlite3.IntegrityError:
             conn.close()
             return jsonify({"error": "User already exists"}), 400
 
         conn.close()
 
-        return jsonify({"message": "User created"}), 201
+        return jsonify({"message": "User registered",
+            "verification_token": verification_token}), 201
+
+    #------------------------------
+    # Create verify Email Route
+    #------------------------------
+    @app.route("/verify-email", methods=["POST"])
+    def verify_email():
+
+        data = request.get_json()
+        token = data.get("token")
+
+        conn = get_db_connection()
+
+        user = conn.execute(
+            "SELECT * FROM users WHERE verification_token = ?",
+            (token,)
+        ).fetchone()
+
+        if user is None:
+            return jsonify({"error": "Invalid token"}), 400
+        
+        conn.execute(
+            "UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?",
+            (user["id"],)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "Email verified successfully"
+        })
 
     # -----------------------------
     # Login
@@ -170,6 +204,11 @@ def register_routes(app):
 
         if not user:
             return jsonify({"error": "User not found"}), 404
+        
+        if user["is_verified"] == 0:
+            return jsonify({
+                "error": "Email not verified"
+            }), 403
 
         if not bcrypt.checkpw(
             password.encode("utf-8"),
@@ -420,7 +459,7 @@ def register_routes(app):
         if "file" not in request.files:
             return jsonify({"error": "No file provided"}), 400
         
-        file = request.files["files"]
+        file = request.files["file"]
 
         if file.filename == "":
             return jsonify({"error": "Empty filename"}), 400

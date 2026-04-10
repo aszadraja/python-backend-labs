@@ -11,7 +11,9 @@ def init_db():
             password TEXT NOT NULL,
             role TEXT DEFAULT 'user',
             reset_token TEXT,
-            profile_image TEXT
+            profile_image TEXT,
+            is_verified INTEGER DEFAULT 0,
+            verification_token TEXT
         )
     """)
 
