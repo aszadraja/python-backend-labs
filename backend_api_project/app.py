@@ -3,12 +3,14 @@ from models import init_db
 from routes import register_routes
 from datetime import datetime
 from config import Config 
+from flasgger import Swagger
 import logging
 import os
 
 app = Flask(__name__)
 
 app.config.from_object(Config)
+Swagger(app)
 # Secret key for JWT
 app.config["SECRET_KEY"] = "supersecretkey"
 

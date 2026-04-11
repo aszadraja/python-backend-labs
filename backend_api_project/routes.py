@@ -8,9 +8,10 @@ import datetime
 import sqlite3
 from functools import wraps
 from time import time
+from collections import defaultdict
 import secrets
 
-request_count = {}
+request_count = defaultdict(list)
 RATE_LIMIT = 5
 WINDOW = 60
 
@@ -179,6 +180,28 @@ def register_routes(app):
     @app.route("/login", methods=["POST"])
     @rate_limit
     def login():
+        """ 
+        Login user
+        ---
+        tags:
+         - Authentication
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+        responses:
+          200:
+            description: Login successful
+          401:
+            description: Invalid credentials
+        """
 
         data = request.get_json()
 
@@ -291,7 +314,7 @@ def register_routes(app):
             access_token = jwt.encode(
                 {
                     "user_id": decoded["user_id"],
-                    "exp": datetime.datetime.utcnow()
+                    "exp": datetime.datetime.now(datetime.timezone.utc)
                     + datetime.timedelta(minutes=current_app.config["ACCESS_TOKEN_EXPIRE"])
                 },
                 current_app.config["SECRET_KEY"],
@@ -466,19 +489,17 @@ def register_routes(app):
         
         filename = secure_filename(file.filename)
 
+        UPLOAD_FOLDER = "uploads"
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
         upload_path = os.path.join("uploads", filename)
 
         file.save(upload_path)
 
         token = request.headers["Authorization"].split(" ")[1]
 
-        decoded = jwt.decode(
-            token,
-            current_app.config["SECRET_KEY"],
-            algorithms=["HS256"]
-        )
-
-        user_id = decoded["user_id"]
+        request.user_id = data["user_id"]
+        user_id = request.user_id
 
         conn = get_db_connection()
 
@@ -503,14 +524,6 @@ def register_routes(app):
     def profile():
 
         token = request.headers["Authorization"].split(" ")[1]
-
-        data = jwt.decode(
-            token,
-            current_app.config["SECRET_KEY"],
-            algorithms=["HS256"]
-        )
-
-        user_id = data["user_id"]
 
         conn = get_db_connection()
 
