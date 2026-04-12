@@ -36,3 +36,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 33 ✅: implemented profile image upload API
 - Day 34 ✅: implemented email verification system
 - Day 35 ✅: added Swagger API documentation
+- Day 36 ✅: prepared backend for deployment

@@ -1,1 +1,6 @@
 database.db
+.env
+app.log
+uploads/
+__pycache__/
+venv/
