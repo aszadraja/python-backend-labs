@@ -1,7 +1,7 @@
 import os
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, current_app
-from database import get_db_connection
+from backend_api_project.database import get_db_connection
 import bcrypt
 import jwt
 import datetime
