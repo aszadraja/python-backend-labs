@@ -1,20 +1,22 @@
-from backend_api_project.database import get_db_connection
+from database import get_db_connection
 
 def init_db():
     conn = get_db_connection()
+    cursor = conn.cursor()
 
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE,
-            age INTEGER,
-            password TEXT,
-            verification_token TEXT,
-            is_verified INTEGER DEFAULT 0,
-            reset_token TEXT,
-            profile_image TEXT,
-            role TEXT DEFAULT 'user'      
-        )
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name TEXT UNIQUE NOT NULL,
+        age INTEGER NOT NULL CHECK (age > 0),
+        password TEXT NOT NULL,
+        verification_token TEXT,
+        is_verified BOOLEAN DEFAULT FALSE,
+        reset_token TEXT,
+        profile_image TEXT,
+        role TEXT CHECK (role IN ('user', 'admin')) DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
     """)
 
     conn.commit()

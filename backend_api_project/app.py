@@ -6,6 +6,9 @@ from datetime import datetime
 from flasgger import Swagger
 import logging
 
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Flask(__name__)
 
 app.config.from_object(Config)

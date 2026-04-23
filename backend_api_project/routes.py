@@ -1,16 +1,40 @@
 import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, current_app
-from backend_api_project.database import get_db_connection
 import bcrypt
 import jwt
 import datetime
-import sqlite3
 from functools import wraps
 from time import time
 from collections import defaultdict
 import secrets
 
+from database import get_db_connection
+
+try:
+    conn = get_db_connection()
+    print("✅ Connected to PostgreSQL")
+    conn.close()
+except Exception as e:
+    print("❌ Error:", e)
+
+# -----------------------------
+# DB CONNECTION (PostgreSQL)
+# -----------------------------
+def get_db_connection():
+    return psycopg2.connect(
+        host="localhost",
+        database="mydb",
+        user="postgres",
+        password="kali",
+        cursor_factory=RealDictCursor
+    )
+
+# -----------------------------
+# Rate Limit Config
+# -----------------------------
 request_count = defaultdict(list)
 RATE_LIMIT = 5
 WINDOW = 60
@@ -18,7 +42,7 @@ WINDOW = 60
 blacklisted_tokens = set()
 
 # -----------------------------
-# Token Required Middleware
+# Token Middleware
 # -----------------------------
 def token_required(f):
     @wraps(f)
@@ -50,14 +74,12 @@ def token_required(f):
 
         except jwt.ExpiredSignatureError:
             return jsonify({"error": "Token expired"}), 401
-
         except jwt.InvalidTokenError:
             return jsonify({"error": "Invalid token"}), 401
 
         return f(*args, **kwargs)
 
     return decorated
-
 
 # -----------------------------
 # Rate Limit Middleware
@@ -68,9 +90,6 @@ def rate_limit(f):
 
         ip = request.headers.get("X-Forwarded-For", request.remote_addr)
         now = time()
-
-        if ip not in request_count:
-            request_count[ip] = []
 
         request_count[ip] = [t for t in request_count[ip] if now - t < WINDOW]
 
@@ -83,9 +102,8 @@ def rate_limit(f):
 
     return decorated
 
-
 # -----------------------------
-# Routes
+# ROUTES
 # -----------------------------
 def register_routes(app):
 
@@ -94,14 +112,13 @@ def register_routes(app):
         return "Backend API Running 🚀"
 
     # -----------------------------
-    # Create User
+    # CREATE USER
     # -----------------------------
     @app.route("/users", methods=["POST"])
     @rate_limit
     def create_user():
 
         data = request.get_json()
-
         if not data:
             return jsonify({"error": "Invalid input"}), 400
 
@@ -112,14 +129,14 @@ def register_routes(app):
         if not name:
             return jsonify({"error": "Name required"}), 400
 
-        name = name.strip().lower()
-        verification_token = secrets.token_hex(16)
-
         if not isinstance(age, int):
             return jsonify({"error": "Age must be integer"}), 400
 
         if not password or len(password) < 6:
-            return jsonify({"error": "Password must be at least 6 characters"}), 400
+            return jsonify({"error": "Weak password"}), 400
+
+        name = name.strip().lower()
+        verification_token = secrets.token_hex(16)
 
         hashed_password = bcrypt.hashpw(
             password.encode("utf-8"),
@@ -127,87 +144,65 @@ def register_routes(app):
         ).decode("utf-8")
 
         conn = get_db_connection()
+        cursor = conn.cursor()
 
         try:
-            conn.execute(
-                "INSERT INTO users (name, age, password, verification_token) VALUES (?, ?, ?, ?)",
+            cursor.execute(
+                "INSERT INTO users (name, age, password, verification_token) VALUES (%s, %s, %s, %s)",
                 (name, age, hashed_password, verification_token)
             )
             conn.commit()
-        except sqlite3.IntegrityError:
+        except Exception as e:
+            conn.rollback()
             conn.close()
             return jsonify({"error": "User already exists"}), 400
 
         conn.close()
 
-        return jsonify({"message": "User registered",
-            "verification_token": verification_token}), 201
+        return jsonify({
+            "message": "User registered",
+            "verification_token": verification_token
+        }), 201
 
-    #------------------------------
-    # Create verify Email Route
-    #------------------------------
+    # -----------------------------
+    # VERIFY EMAIL
+    # -----------------------------
     @app.route("/verify-email", methods=["POST"])
     def verify_email():
 
-        data = request.get_json()
-        token = data.get("token")
+        token = request.json.get("token")
 
         conn = get_db_connection()
+        cursor = conn.cursor()
 
-        user = conn.execute(
-            "SELECT * FROM users WHERE verification_token = ?",
+        cursor.execute(
+            "SELECT * FROM users WHERE verification_token=%s",
             (token,)
-        ).fetchone()
+        )
+        user = cursor.fetchone()
 
-        if user is None:
+        if not user:
+            conn.close()
             return jsonify({"error": "Invalid token"}), 400
-        
-        conn.execute(
-            "UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?",
+
+        cursor.execute(
+            "UPDATE users SET is_verified=TRUE, verification_token=NULL WHERE id=%s",
             (user["id"],)
         )
 
         conn.commit()
         conn.close()
 
-        return jsonify({
-            "message": "Email verified successfully"
-        })
+        return jsonify({"message": "Email verified successfully"})
 
     # -----------------------------
-    # Login
+    # LOGIN
     # -----------------------------
     @app.route("/login", methods=["POST"])
     @rate_limit
     def login():
-        """ 
-        Login user
-        ---
-        tags:
-         - Authentication
-        parameters:
-          - name: body
-            in: body
-            required: true
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                password:
-                  type: string
-        responses:
-          200:
-            description: Login successful
-          401:
-            description: Invalid credentials
-        """
 
         data = request.get_json()
-
-        if not data:
-            return jsonify({"error": "Invalid input"}), 400
-
         name = data.get("name")
         password = data.get("password")
 
@@ -217,21 +212,21 @@ def register_routes(app):
         name = name.strip().lower()
 
         conn = get_db_connection()
+        cursor = conn.cursor()
 
-        user = conn.execute(
-            "SELECT * FROM users WHERE name=?",
+        cursor.execute(
+            "SELECT * FROM users WHERE name=%s",
             (name,)
-        ).fetchone()
+        )
+        user = cursor.fetchone()
 
         conn.close()
 
         if not user:
             return jsonify({"error": "User not found"}), 404
-        
-        if user["is_verified"] == 0:
-            return jsonify({
-                "error": "Email not verified"
-            }), 403
+
+        if not user["is_verified"]:
+            return jsonify({"error": "Email not verified"}), 403
 
         if not bcrypt.checkpw(
             password.encode("utf-8"),
@@ -242,8 +237,7 @@ def register_routes(app):
         access_token = jwt.encode(
             {
                 "user_id": user["id"],
-                "exp": datetime.datetime.utcnow()
-                + datetime.timedelta(minutes=current_app.config["ACCESS_TOKEN_EXPIRE"])
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
             },
             current_app.config["SECRET_KEY"],
             algorithm="HS256"
@@ -252,8 +246,7 @@ def register_routes(app):
         refresh_token = jwt.encode(
             {
                 "user_id": user["id"],
-                "exp": datetime.datetime.utcnow()
-                + datetime.timedelta(days=current_app.config["REFRESH_TOKEN_EXPIRE"])
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
             },
             current_app.config["SECRET_KEY"],
             algorithm="HS256"
@@ -265,7 +258,7 @@ def register_routes(app):
         })
 
     # -----------------------------
-    # Get Users
+    # GET USERS
     # -----------------------------
     @app.route("/users", methods=["GET"])
     @token_required
@@ -274,63 +267,27 @@ def register_routes(app):
 
         page = request.args.get("page", 1, type=int)
         limit = request.args.get("limit", 5, type=int)
-
         offset = (page - 1) * limit
 
         conn = get_db_connection()
+        cursor = conn.cursor()
 
-        users = conn.execute(
-            "SELECT id, name, age FROM users LIMIT ? OFFSET ?",
+        cursor.execute(
+            "SELECT id, name, age FROM users LIMIT %s OFFSET %s",
             (limit, offset)
-        ).fetchall()
+        )
+        users = cursor.fetchall()
 
         conn.close()
 
         return jsonify({
             "page": page,
             "limit": limit,
-            "data": [dict(user) for user in users]
+            "data": users
         })
 
     # -----------------------------
-    # Refresh Token
-    # -----------------------------
-    @app.route("/refresh", methods=["POST"])
-    def refresh():
-
-        data = request.get_json()
-        refresh_token = data.get("refresh_token")
-
-        if not refresh_token:
-            return jsonify({"error": "Missing refresh token"}), 400
-
-        try:
-            decoded = jwt.decode(
-                refresh_token,
-                current_app.config["SECRET_KEY"],
-                algorithms=["HS256"]
-            )
-
-            access_token = jwt.encode(
-                {
-                    "user_id": decoded["user_id"],
-                    "exp": datetime.datetime.now(datetime.timezone.utc)
-                    + datetime.timedelta(minutes=current_app.config["ACCESS_TOKEN_EXPIRE"])
-                },
-                current_app.config["SECRET_KEY"],
-                algorithm="HS256"
-            )
-
-            return jsonify({"access_token": access_token})
-
-        except jwt.ExpiredSignatureError:
-            return jsonify({"error": "Refresh token expired"}), 401
-
-        except jwt.InvalidTokenError:
-            return jsonify({"error": "Invalid refresh token"}), 401
-
-    # -----------------------------
-    # Update User
+    # UPDATE USER
     # -----------------------------
     @app.route("/users/<int:user_id>", methods=["PUT"])
     @token_required
@@ -340,20 +297,18 @@ def register_routes(app):
             return jsonify({"error": "Unauthorized"}), 403
 
         data = request.get_json()
-
         name = data.get("name")
         age = data.get("age")
 
         if not name or not isinstance(age, int):
             return jsonify({"error": "Invalid input"}), 400
 
-        name = name.strip().lower()
-
         conn = get_db_connection()
+        cursor = conn.cursor()
 
-        conn.execute(
-            "UPDATE users SET name=?, age=? WHERE id=?",
-            (name, age, user_id)
+        cursor.execute(
+            "UPDATE users SET name=%s, age=%s WHERE id=%s",
+            (name.strip().lower(), age, user_id)
         )
 
         conn.commit()
@@ -362,15 +317,7 @@ def register_routes(app):
         return jsonify({"message": "User updated"})
 
     # -----------------------------
-    # Delete Users (DISABLED)
-    # -----------------------------
-    @app.route("/users", methods=["DELETE"])
-    @token_required
-    def delete_users():
-        return jsonify({"error": "Not allowed"}), 403
-
-    # -----------------------------
-    # Logout
+    # LOGOUT
     # -----------------------------
     @app.route("/logout", methods=["POST"])
     @token_required
@@ -379,172 +326,38 @@ def register_routes(app):
         token = request.headers["Authorization"].split(" ")[1]
         blacklisted_tokens.add(token)
 
-        return jsonify({"message": "Logged out successfully"})
+        return jsonify({"message": "Logged out"})
 
     # -----------------------------
-    # Forgot Password
+    # PROFILE
     # -----------------------------
-    @app.route("/forgot-password", methods=["POST"])
-    @rate_limit
-    def forgot_password():
-
-        data = request.get_json()
-        name = data.get("name")
-
-        if not name:
-            return jsonify({"error": "Name required"}), 400
-
-        name = name.strip().lower()
-
-        conn = get_db_connection()
-
-        user = conn.execute(
-            "SELECT * FROM users WHERE name=?",
-            (name,)
-        ).fetchone()
-
-        if not user:
-            conn.close()
-            return jsonify({"error": "User not found"}), 404
-
-        reset_token = secrets.token_hex(16)
-
-        conn.execute(
-            "UPDATE users SET reset_token=? WHERE id=?",
-            (reset_token, user["id"])
-        )
-
-        conn.commit()
-        conn.close()
-
-        print(f"Reset token: {reset_token}")  # simulate email
-
-        return jsonify({
-            "message": "Reset token generated",
-            "reset_token": reset_token
-        })
-
-    # -----------------------------
-    # Reset Password
-    # -----------------------------
-    @app.route("/reset-password", methods=["POST"])
-    @rate_limit
-    def reset_password():
-
-        data = request.get_json() or {}
-
-        token = data.get("token")
-        new_password = data.get("password")
-
-        if not token or not new_password:
-            return jsonify({"error": "Invalid input"}), 400
-
-        if len(new_password) < 6:
-            return jsonify({"error": "Weak password"}), 400
-
-        hashed_password = bcrypt.hashpw(
-            new_password.encode("utf-8"),
-            bcrypt.gensalt()
-        ).decode("utf-8")
-
-        conn = get_db_connection()
-
-        print("Received Token:", token)
-
-        user = conn.execute(
-            "SELECT * FROM users WHERE reset_token=?",
-            (token,)
-        ).fetchone()
-
-        print("User Found:", user)
-
-        if not user:
-            conn.close()
-            return jsonify({"error": "Invalid token"}), 400
-
-        conn.execute(
-            "UPDATE users SET password=?, reset_token=? WHERE id=?",
-            (hashed_password, None, user["id"])
-        )
-
-        conn.commit()
-        conn.close()
-
-        return jsonify({"message": "Password reset successful"})
-
-    #-------------------------
-    #Upload Profile Image Route
-    #-------------------------
-    @app.route("/upload-profile", methods=["POST"])
-    @token_required
-    def upload_profile():
-
-        if "file" not in request.files:
-            return jsonify({"error": "No file provided"}), 400
-        
-        file = request.files["file"]
-
-        if file.filename == "":
-            return jsonify({"error": "Empty filename"}), 400
-        
-        filename = secure_filename(file.filename)
-
-        UPLOAD_FOLDER = "uploads"
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-        upload_path = os.path.join("uploads", filename)
-
-        file.save(upload_path)
-
-        token = request.headers["Authorization"].split(" ")[1]
-
-        request.user_id = data["user_id"]
-        user_id = request.user_id
-
-        conn = get_db_connection()
-
-        conn.execute(
-            "UPDATE users SET profile_image = ? WHERE id = ?",
-            (upload_path, user_id)
-        )
-
-        conn.commit()
-        conn.close()
-
-        return jsonify({
-            "message": "Profile image uploaded",
-            "file": upload_path
-        })
-    
-    #--------------------------
-    # Get Profile Route
-    #--------------------------
     @app.route("/profile", methods=["GET"])
     @token_required
     def profile():
 
-        token = request.headers["Authorization"].split(" ")[1]
+        user_id = request.user_id
 
         conn = get_db_connection()
+        cursor = conn.cursor()
 
-        user = conn.execute(
-            "SELECT id, name, age, role, profile_image FROM users WHERE id = ?",
+        cursor.execute(
+            "SELECT id, name, age, role, profile_image FROM users WHERE id=%s",
             (user_id,)
-        ).fetchone()
+        )
+        user = cursor.fetchone()
 
         conn.close()
 
-        return jsonify(dict(user))
+        return jsonify(user)
+
 # -----------------------------
-# Main App
+# MAIN
 # -----------------------------
 if __name__ == "__main__":
 
     app = Flask(__name__)
 
     app.config["SECRET_KEY"] = "super_secret_key"
-    app.config["ACCESS_TOKEN_EXPIRE"] = 15
-    app.config["REFRESH_TOKEN_EXPIRE"] = 7
 
     register_routes(app)
 

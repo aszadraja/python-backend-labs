@@ -1,8 +1,6 @@
-import sqlite3
-
-DATABASE = "database.db"
+import psycopg2
+from config import Config
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(Config.DATABASE_URL)
     return conn
