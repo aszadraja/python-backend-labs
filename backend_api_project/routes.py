@@ -267,15 +267,30 @@ def register_routes(app):
 
         page = request.args.get("page", 1, type=int)
         limit = request.args.get("limit", 5, type=int)
+        search = request.args.get("search", "")
+        sort = request.args.get("sort", "id")
+        order = request.args.get("order", "asc")
         offset = (page - 1) * limit
 
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT id, name, age FROM users LIMIT %s OFFSET %s",
-            (limit, offset)
-        )
+        # Sorting 
+        if sort not in ["id", "name", "age"]:
+            sort = "id"
+        
+        if order.lower() not in ["asc", "desc"]:
+            order = "asc"
+
+        # Base query
+        query = "SELECT id, name, age FROM users WHERE name LIKE %s"
+        params = [f"%{search}%"]
+
+        # Add sorting and pagination
+        query += f" ORDER BY {sort} {order.upper()} LIMIT %s OFFSET %s"
+        params.extend([limit, offset])
+
+        cursor.execute(query,params)
         users = cursor.fetchall()
 
         conn.close()
@@ -293,7 +308,7 @@ def register_routes(app):
     @token_required
     def update_user(user_id):
 
-        if request.user_id != user_id:
+        if request.user_id != data["user_id"]:
             return jsonify({"error": "Unauthorized"}), 403
 
         data = request.get_json()

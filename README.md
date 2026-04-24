@@ -39,3 +39,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 36 ✅: prepared backend for deployment
 - Day 37 ✅: try to add on render
 - Day 38 ✅: migrated from SQLite to PostgreSQL
+- Day 39 ✅: implemented advanced querying and optimized pagination
