@@ -11,6 +11,9 @@ from time import time
 from collections import defaultdict
 import secrets
 
+CACHE_EXPIRE = 60
+cache = {}
+
 from database import get_db_connection
 
 try:
@@ -265,35 +268,56 @@ def register_routes(app):
     @rate_limit
     def get_users():
 
-        page = request.args.get("page", 1, type=int)
-        limit = request.args.get("limit", 5, type=int)
-        search = request.args.get("search", "")
-        sort = request.args.get("sort", "id")
-        order = request.args.get("order", "asc")
-        offset = (page - 1) * limit
+        cache_key = tuple(sorted(request.args.items()))
+        current_time = time()
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        #  Check Cache
+        if cache_key in cache:
+            data, timestamp = cache[cache_key]
+            if current_time - timestamp < CACHE_EXPIRE:
+                return jsonify({
+                    "source": "cache",
+                    "data": data
+                })
+            else:
+                del cache[cache_key]
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+        # Fetch form DB
+            page = request.args.get("page", 1, type=int)
+            limit = request.args.get("limit", 5, type=int)
+            search = request.args.get("search", "")
+            sort = request.args.get("sort", "id")
+            order = request.args.get("order", "asc")
+            offset = (page - 1) * limit
 
         # Sorting 
-        if sort not in ["id", "name", "age"]:
-            sort = "id"
+            if sort not in ["id", "name", "age"]:
+                sort = "id"
         
-        if order.lower() not in ["asc", "desc"]:
-            order = "asc"
+            if order.lower() not in ["asc", "desc"]:
+                order = "asc"
 
-        # Base query
-        query = "SELECT id, name, age FROM users WHERE name LIKE %s"
-        params = [f"%{search}%"]
+         # Base query
+            query = "SELECT id, name, age FROM users WHERE name LIKE %s"
+            params = [f"%{search}%"]
 
-        # Add sorting and pagination
-        query += f" ORDER BY {sort} {order.upper()} LIMIT %s OFFSET %s"
-        params.extend([limit, offset])
+            # Add sorting and pagination
+            query += f" ORDER BY {sort} {order.upper()} LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
 
-        cursor.execute(query,params)
-        users = cursor.fetchall()
+            cursor.execute(query,params)
+        
+            columns = [col[0] for col in cursor.description]
+            users = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        
+        finally:
+            conn.close()
 
-        conn.close()
+        # Save to cache
+        cache[cache_key] = (users, current_time)
 
         return jsonify({
             "page": page,

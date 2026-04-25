@@ -226,3 +226,83 @@
 2026-04-24 23:52:19,064 -  * Restarting with stat
 2026-04-24 23:52:21,306 -  * Debugger is active!
 2026-04-24 23:52:21,310 -  * Debugger PIN: 116-726-011
+2026-04-25 22:30:22,559 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.62.51:5000
+2026-04-25 22:30:22,560 - [33mPress CTRL+C to quit[0m
+2026-04-25 22:30:22,563 -  * Restarting with stat
+2026-04-25 22:30:24,441 -  * Debugger is active!
+2026-04-25 22:30:24,447 -  * Debugger PIN: 141-876-518
+2026-04-25 22:31:02,402 - GET /users - 2026-04-25 17:01:02.401971
+2026-04-25 22:31:02,405 - 127.0.0.1 - - [25/Apr/2026 22:31:02] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-04-25 22:31:07,740 - GET / - 2026-04-25 17:01:07.740471
+2026-04-25 22:31:07,740 - 127.0.0.1 - - [25/Apr/2026 22:31:07] "GET / HTTP/1.1" 200 -
+2026-04-25 22:31:43,403 - POST /users - 2026-04-25 17:01:43.403024
+2026-04-25 22:31:43,700 - 127.0.0.1 - - [25/Apr/2026 22:31:43] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-04-25 22:32:07,813 - POST /verify-email - 2026-04-25 17:02:07.813739
+2026-04-25 22:32:07,989 - 127.0.0.1 - - [25/Apr/2026 22:32:07] "POST /verify-email HTTP/1.1" 200 -
+2026-04-25 22:32:24,520 - POST /login - 2026-04-25 17:02:24.520166
+2026-04-25 22:32:24,785 - 127.0.0.1 - - [25/Apr/2026 22:32:24] "POST /login HTTP/1.1" 200 -
+2026-04-25 22:32:58,576 - GET /users - 2026-04-25 17:02:58.576015
+2026-04-25 22:32:58,583 - 127.0.0.1 - - [25/Apr/2026 22:32:58] "[35m[1mGET /users HTTP/1.1[0m" 500 -
+2026-04-25 22:33:59,625 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 22:33:59,888 -  * Restarting with stat
+2026-04-25 22:34:02,011 -  * Debugger is active!
+2026-04-25 22:34:02,015 -  * Debugger PIN: 141-876-518
+2026-04-25 22:34:05,627 - GET /users - 2026-04-25 17:04:05.627551
+2026-04-25 22:34:05,636 - 127.0.0.1 - - [25/Apr/2026 22:34:05] "[35m[1mGET /users HTTP/1.1[0m" 500 -
+2026-04-25 22:34:49,279 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 22:34:49,552 -  * Restarting with stat
+2026-04-25 22:34:51,853 -  * Debugger is active!
+2026-04-25 22:34:51,856 -  * Debugger PIN: 141-876-518
+2026-04-25 22:43:01,460 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 22:43:01,734 -  * Restarting with stat
+2026-04-25 22:43:03,890 -  * Debugger is active!
+2026-04-25 22:43:03,893 -  * Debugger PIN: 141-876-518
+2026-04-25 22:47:56,958 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 22:47:57,556 -  * Restarting with stat
+2026-04-25 22:48:01,745 -  * Debugger is active!
+2026-04-25 22:48:01,751 -  * Debugger PIN: 141-876-518
+2026-04-25 22:49:38,839 - GET /users - 2026-04-25 17:19:38.839447
+2026-04-25 22:49:38,908 - 127.0.0.1 - - [25/Apr/2026 22:49:38] "[35m[1mGET /users HTTP/1.1[0m" 500 -
+2026-04-25 23:01:57,696 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 23:01:58,387 -  * Restarting with stat
+2026-04-25 23:02:02,736 -  * Debugger is active!
+2026-04-25 23:02:02,742 -  * Debugger PIN: 141-876-518
+2026-04-25 23:02:08,824 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 23:02:09,514 -  * Restarting with stat
+2026-04-25 23:02:13,898 -  * Debugger is active!
+2026-04-25 23:02:13,903 -  * Debugger PIN: 141-876-518
+2026-04-25 23:29:34,710 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 23:29:35,227 -  * Restarting with stat
+2026-04-25 23:32:23,968 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.62.51:5000
+2026-04-25 23:32:23,968 - [33mPress CTRL+C to quit[0m
+2026-04-25 23:32:23,972 -  * Restarting with stat
+2026-04-25 23:32:28,348 -  * Debugger is active!
+2026-04-25 23:32:28,353 -  * Debugger PIN: 141-876-518
+2026-04-25 23:34:37,186 - GET /users - 2026-04-25 18:04:37.186623
+2026-04-25 23:34:37,191 - 127.0.0.1 - - [25/Apr/2026 23:34:37] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-04-25 23:34:53,817 - POST /login - 2026-04-25 18:04:53.817547
+2026-04-25 23:34:54,403 - 127.0.0.1 - - [25/Apr/2026 23:34:54] "POST /login HTTP/1.1" 200 -
+2026-04-25 23:35:16,221 - GET /users - 2026-04-25 18:05:16.221154
+2026-04-25 23:35:16,222 - 127.0.0.1 - - [25/Apr/2026 23:35:16] "[31m[1mGET /users HTTP/1.1[0m" 401 -
+2026-04-25 23:35:21,601 - GET /users - 2026-04-25 18:05:21.601786
+2026-04-25 23:35:21,619 - 127.0.0.1 - - [25/Apr/2026 23:35:21] "[35m[1mGET /users HTTP/1.1[0m" 500 -
+2026-04-25 23:40:23,341 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 23:40:24,012 -  * Restarting with stat
+2026-04-25 23:40:28,679 -  * Debugger is active!
+2026-04-25 23:40:28,688 -  * Debugger PIN: 141-876-518
+2026-04-25 23:41:24,265 -  * Detected change in 'C:\\Users\\acer\\Desktop\\python-backend-labs\\backend_api_project\\routes.py', reloading
+2026-04-25 23:41:24,712 -  * Restarting with stat
+2026-04-25 23:41:29,006 -  * Debugger is active!
+2026-04-25 23:41:29,012 -  * Debugger PIN: 141-876-518
+2026-04-25 23:41:43,091 - GET /users - 2026-04-25 18:11:43.090880
+2026-04-25 23:41:43,232 - 127.0.0.1 - - [25/Apr/2026 23:41:43] "GET /users HTTP/1.1" 200 -
+2026-04-25 23:42:00,400 - GET /users - 2026-04-25 18:12:00.400800
+2026-04-25 23:42:00,496 - 127.0.0.1 - - [25/Apr/2026 23:42:00] "GET /users?page=2 HTTP/1.1" 200 -
+2026-04-25 23:42:07,503 - GET /users - 2026-04-25 18:12:07.503109
+2026-04-25 23:42:07,612 - 127.0.0.1 - - [25/Apr/2026 23:42:07] "GET /users?page=3 HTTP/1.1" 200 -
