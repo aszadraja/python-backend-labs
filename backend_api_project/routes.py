@@ -1,4 +1,5 @@
 import os
+import threading
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.utils import secure_filename
@@ -7,9 +8,11 @@ import bcrypt
 import jwt
 import datetime
 from functools import wraps
-from time import time
+from time import sleep, time
 from collections import defaultdict
 import secrets
+
+sleep(5)
 
 CACHE_EXPIRE = 60
 cache = {}
@@ -22,6 +25,11 @@ try:
     conn.close()
 except Exception as e:
     print("❌ Error:", e)
+
+def send_email_simulation(user_name):
+    print(f"Sending email to {user_name}...")
+
+    print(f"Email sent to {user_name}")
 
 # -----------------------------
 # DB CONNECTION (PostgreSQL)
@@ -161,6 +169,12 @@ def register_routes(app):
             return jsonify({"error": "User already exists"}), 400
 
         conn.close()
+
+        thread = threading.Thread(
+            target=send_email_simulation,
+            args=(name,)
+        )
+        thread.start()
 
         return jsonify({
             "message": "User registered",
