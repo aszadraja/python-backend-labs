@@ -1,7 +1,7 @@
 import os
 import threading
-import datetime
 import secrets
+from datetime import datetime, timedelta, UTC
 from time import sleep, time
 from collections import defaultdict
 
@@ -257,7 +257,7 @@ def register_routes(app):
         access_token = jwt.encode(
             {
                 "user_id": user["id"],
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+                "exp": datetime.now(UTC) + timedelta(minutes=30)
             },
             current_app.config["SECRET_KEY"],
             algorithm="HS256"
@@ -266,7 +266,7 @@ def register_routes(app):
         refresh_token = jwt.encode(
             {
                 "user_id": user["id"],
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
+                "exp": datetime.now(UTC) + timedelta(days=7)
             },
             current_app.config["SECRET_KEY"],
             algorithm="HS256"

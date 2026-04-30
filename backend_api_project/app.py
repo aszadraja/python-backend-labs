@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from backend_api_project.models import init_db
 from backend_api_project.routes import register_routes
 from backend_api_project.config import Config
-from datetime import datetime
+from datetime import datetime, UTC
 from flasgger import Swagger
 import logging
 
@@ -15,7 +15,7 @@ app.config.from_object(Config)
 Swagger(app)
 
 # Secret key for JWT
-app.config["SECRET_KEY"] = "supersecretkey"
+app.config["SECRET_KEY"] = "supersecretkey_supersecretkey_12345"
 app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
 
 # Error handlers
@@ -40,7 +40,7 @@ logging.basicConfig(
 
 @app.before_request
 def log_request():
-    logging.info(f"{request.method} {request.path} - {datetime.utcnow()}")
+    logging.info(f"{request.method} {request.path} - {datetime.now(UTC)}")
 
 # Initialize DB and routes
 init_db()

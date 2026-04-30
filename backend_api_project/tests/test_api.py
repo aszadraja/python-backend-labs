@@ -1,5 +1,6 @@
 # BASIC TEST SETUP
 import pytest
+import time
 
 from backend_api_project.app import app
 
@@ -15,8 +16,10 @@ def test_home(client):
 
 # TEST REGISTER API
 def test_register(client):
+    username = "TestUser_" + str(time.time())
+
     response = client.post("/users", json = {
-        "name": "TestUser",
+        "name": username,
         "age": 22,
         "password": "test123"
     })
@@ -25,26 +28,33 @@ def test_register(client):
 
 # TEST LOGIN API
 def test_login(client):
-    client.post("/users", json={
-        "name": "TestUser2",
+    username = "TestUser_" + str(time.time()).lower()
+
+    res = client.post("/users", json={
+        "name": username,
         "age": 24,
         "password": "test123"
     })
+    assert res.status_code == 201
 
     from backend_api_project.database import get_db_connection
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute(
-        "UPDATE users SET is_verified = TRUE WHERE name = %s",
-        ("TestUser2",)
+        "UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE Lower(name) = LOWER(%s) ",
+        (username,)
     )
-    conn.commit
+
+    conn.commit()
     conn.close()
 
     response = client.post("/login", json={
-        "name":"TestUser2",
+        "name":username,
         "password":"test123"
     })
+    print(response.status_code)
+    print(response.json)
 
     assert response.status_code == 200
     assert "access_token" in response.json
