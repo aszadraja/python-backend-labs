@@ -1,23 +1,26 @@
 import os
 import threading
+import datetime
+import secrets
+from time import sleep, time
+from collections import defaultdict
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, current_app
 import bcrypt
 import jwt
-import datetime
 from functools import wraps
-from time import sleep, time
-from collections import defaultdict
-import secrets
+
+from backend_api_project.database import get_db_connection
 
 sleep(5)
 
 CACHE_EXPIRE = 60
 cache = {}
 
-from database import get_db_connection
+from backend_api_project.database import get_db_connection
 
 try:
     conn = get_db_connection()

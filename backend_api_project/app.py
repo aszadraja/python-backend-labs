@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
-from models import init_db
-from routes import register_routes
-from config import Config
+from backend_api_project.models import init_db
+from backend_api_project.routes import register_routes
+from backend_api_project.config import Config
 from datetime import datetime
 from flasgger import Swagger
 import logging

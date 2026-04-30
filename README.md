@@ -42,3 +42,4 @@ Step-by-step Python backend and DSA practice for software engineering roles
 - Day 39 ✅: implemented advanced querying and optimized pagination
 - Day 40 ✅: implemented caching for optimized performance
 - Day 41 ✅: implemented background task using threading
+- Day 42 ✅: added API testing using pytest
