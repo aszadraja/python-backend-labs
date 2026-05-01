@@ -1,45 +1,65 @@
-# python-backend-labs
-Step-by-step Python backend and DSA practice for software engineering roles
-## Progress Log
-- Day 01 ✅: Python basics (variables, data types, input/output) and array introduction
-- Day 02 ✅: Conditional statements and string operations
-- Day 03 ✅: Loops (for, while) and loop control statements
-- Day 04 ✅: Nested loops and basic pattern problems
-- Day 05 ✅: Functions, parameters, and return values
-- Day 06 ✅: Lists, tuples, and basic collection operations
-- Day 07 ✅: Dictionaries, sets, and frequency counting
-- Day 08 ✅: Functions with lists and dictionaries
-- Day 09 ✅: File handling and string processing
-- Day 10 ✅: Exception handling and input validation
-- Day 11 ✅: Modules and code organization
-- Day 12 ✅: Virtual environments and dependency management
-- Day 13 ✅: Introduction to APIs, HTTP, and JSON
-- Day 14 ✅: Built first Flask API server
-- Day 15 ✅: Update first server and add Dynamic Routing and Query Parameters
-- Day 16 ✅: Update first server and add POST endpoint with JSON validation
-- Day 17 ✅: Update first server and use put & delete using postman
-- Day 18 ✅: connected Flask API with SQLite database
-- Day 19 ✅: implemented UPDATE and DELETE operations with SQLite
-- Day 20 ✅: refactored backend into modular architecture
-- Day 21 ✅: added input validation for API requests
-- Day 22 ✅: fixed duplicate route and added delete endpoint
-- Day 23 ✅: added pagination and search filtering to users API
-- Day 24 ✅: added global error handling and consistent API response
-- Day 25 ✅: Fix: added missing password variable in user registration
-- Day 26 ✅: implemented JWT authentication and protected routes
-- Day 27 ✅: implemented role-based authorization and profile API
-- Day 28 ✅: refactor: improve API route structure
-- Day 29 ✅: implemented logout system with JWT blacklist
-- Day 30 ✅: added request logging and rate limiting
-- Day 31 ✅: implemented refresh token authentication
-- Day 32 ✅: implemented password reset system
-- Day 33 ✅: implemented profile image upload API
-- Day 34 ✅: implemented email verification system
-- Day 35 ✅: added Swagger API documentation
-- Day 36 ✅: prepared backend for deployment
-- Day 37 ✅: try to add on render
-- Day 38 ✅: migrated from SQLite to PostgreSQL
-- Day 39 ✅: implemented advanced querying and optimized pagination
-- Day 40 ✅: implemented caching for optimized performance
-- Day 41 ✅: implemented background task using threading
-- Day 42 ✅: added API testing using pytest
+# 🚀 Backend API Project (Flask)
+
+## 📌 Overview
+
+A production-style backend API built using Flask with authentication, database integration, and advanced features.
+
+## ⚙️ Tech Stack
+
+* Python
+* Flask
+* PostgreSQL
+* JWT Authentication
+* Pytest
+* Swagger (API Docs)
+
+## 🔥 Features
+
+* User Registration & Login
+* JWT Authentication
+* Role-based Authorization
+* Password Reset System
+* Email Verification (simulated)
+* File Upload (Profile Image)
+* Pagination, Filtering, Sorting
+* Caching System
+* Rate Limiting
+* Background Tasks
+* API Testing (pytest)
+
+## 📂 Project Structure
+
+backend_api_project/
+│── app.py
+│── routes.py
+│── models.py
+│── database.py
+│── config.py
+
+---
+
+## ▶️ How to Run
+
+# bash
+pip install -r requirements.txt
+python app.py
+
+## 📌 API Endpoints
+
+* POST /users → Register
+* POST /login → Login
+* GET /users → Get users
+* PUT /users/<id> → Update user
+* DELETE /users/<id> → Delete user
+
+## 🧪 Testing
+
+# bash
+pytest
+
+## 🌐 Future Improvements
+
+* Docker support
+* Redis caching
+* Email service integration
+* Deployment on cloud
