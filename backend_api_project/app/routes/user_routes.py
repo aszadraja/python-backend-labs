@@ -7,20 +7,23 @@ from collections import defaultdict
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
+
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, current_app
 import bcrypt
 import jwt
 from functools import wraps
 
-from backend_api_project.database import get_db_connection
+from config import Config
+
+from app.database import get_db_connection
 
 sleep(5)
 
 CACHE_EXPIRE = 60
 cache = {}
 
-from backend_api_project.database import get_db_connection
+from app.database import get_db_connection
 
 try:
     conn = get_db_connection()
@@ -75,6 +78,9 @@ def token_required(f):
 
         if token in blacklisted_tokens:
             return jsonify({"error": "Token revoked"}), 401
+        
+        print("SECRET_KEY:", current_app.config.get("SECRET_KEY"))
+        print("TYPE:", type(current_app.config.get("SECRET_KEY")))
 
         try:
             data = jwt.decode(
@@ -158,7 +164,7 @@ def register_routes(app):
         ).decode("utf-8")
 
         conn = get_db_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         try:
             cursor.execute(
@@ -259,7 +265,7 @@ def register_routes(app):
                 "user_id": user["id"],
                 "exp": datetime.now(UTC) + timedelta(minutes=30)
             },
-            current_app.config["SECRET_KEY"],
+            Config.SECRET_KEY,
             algorithm="HS256"
         )
 
@@ -288,7 +294,7 @@ def register_routes(app):
         cache_key = tuple(sorted(request.args.items()))
         current_time = time()
 
-        #  Check Cache
+    # Check Cache
         if cache_key in cache:
             data, timestamp = cache[cache_key]
             if current_time - timestamp < CACHE_EXPIRE:
@@ -302,38 +308,57 @@ def register_routes(app):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-        # Fetch form DB
+
+        # Fetch from DB
             page = request.args.get("page", 1, type=int)
             limit = request.args.get("limit", 5, type=int)
             search = request.args.get("search", "")
             sort = request.args.get("sort", "id")
             order = request.args.get("order", "asc")
+
             offset = (page - 1) * limit
 
-        # Sorting 
+        # Validate sorting
             if sort not in ["id", "name", "age"]:
                 sort = "id"
-        
+
             if order.lower() not in ["asc", "desc"]:
                 order = "asc"
 
-         # Base query
-            query = "SELECT id, name, age FROM users WHERE name LIKE %s"
-            params = [f"%{search}%"]
+        # Query
+            query = """
+                SELECT id, name, age
+                FROM users
+                WHERE name LIKE %s
+                ORDER BY {} {}
+                LIMIT %s OFFSET %s
+            """.format(sort, order.upper())
 
-            # Add sorting and pagination
-            query += f" ORDER BY {sort} {order.upper()} LIMIT %s OFFSET %s"
-            params.extend([limit, offset])
+            params = [f"%{search}%", limit, offset]
 
-            cursor.execute(query,params)
-        
-            columns = [col[0] for col in cursor.description]
-            users = [dict(zip(columns, row)) for row in cursor.fetchall()]
-        
+            print("=" * 50)
+            print("QUERY:", query)
+            print("PARAMS:", params)
+
+            cursor.execute(query, params)
+
+            rows = cursor.fetchall()
+            print("ROWS:", rows)
+
+            users = [dict(row) for row in rows]
+            
+            print("USERS:", users)
+            print("=" * 50)
+
+        except Exception as e:
+            print("ERROR:", e)
+            return jsonify({"error": str(e)}), 500
+
         finally:
+            cursor.close()
             conn.close()
 
-        # Save to cache
+    # Save cache
         cache[cache_key] = (users, current_time)
 
         return jsonify({
@@ -341,7 +366,6 @@ def register_routes(app):
             "limit": limit,
             "data": users
         })
-
     # -----------------------------
     # UPDATE USER
     # -----------------------------

@@ -37,7 +37,7 @@ def test_login(client):
     })
     assert res.status_code == 201
 
-    from backend_api_project.database import get_db_connection
+    from app.database import get_db_connection
     conn = get_db_connection()
     cursor = conn.cursor()
 
